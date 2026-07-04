@@ -1,10 +1,15 @@
+import dynamic from "next/dynamic";
 import Nav from "@/components/sections/Nav";
 import Hero from "@/components/sections/Hero";
 import TrustBar from "@/components/sections/TrustBar";
-import Transformations from "@/components/sections/Transformations";
-import Stats from "@/components/sections/Stats";
-import NewWay from "@/components/sections/NewWay";
 import Testimonial from "@/components/sections/Testimonial";
+
+/* below-the-fold client-heavy sections: SSR'd as usual, but their JS ships
+   in separate chunks that load after the shell — keeps FCP/TBT in budget */
+const Transformations = dynamic(() => import("@/components/sections/Transformations"));
+const Stats = dynamic(() => import("@/components/sections/Stats"));
+const NewWay = dynamic(() => import("@/components/sections/NewWay"));
+const Faq = dynamic(() => import("@/components/sections/Faq"));
 import Analysis from "@/components/sections/Analysis";
 import Dermatology from "@/components/sections/Dermatology";
 import Factors from "@/components/sections/Factors";
@@ -12,7 +17,6 @@ import Learn from "@/components/sections/Learn";
 import CtaBand from "@/components/sections/CtaBand";
 import HowItWorks from "@/components/sections/HowItWorks";
 import Pricing from "@/components/sections/Pricing";
-import Faq from "@/components/sections/Faq";
 import Objection from "@/components/sections/Objection";
 import Consider from "@/components/sections/Consider";
 import Footer from "@/components/sections/Footer";

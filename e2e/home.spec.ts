@@ -29,10 +29,10 @@ test("homepage renders every section with no console errors", async ({ page }) =
     "Will analyzing my face",
     "Consider this",
   ]) {
-    await expect(
-      page.getByRole("heading", { name: new RegExp(heading, "i") }).first(),
-      heading,
-    ).toBeVisible();
+    const el = page.getByRole("heading", { name: new RegExp(heading, "i") }).first();
+    // below-fold sections use content-visibility:auto — bring into view first
+    await el.scrollIntoViewIfNeeded();
+    await expect(el, heading).toBeVisible();
   }
   await expect(page.getByText("As Seen In")).toBeVisible();
 

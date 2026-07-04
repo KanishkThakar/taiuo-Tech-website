@@ -1,8 +1,6 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { REVEAL } from "@/components/motion/spec";
 
 interface RevealProps {
@@ -14,7 +12,12 @@ interface RevealProps {
   y?: number;
 }
 
-/** GSAP ScrollTrigger fade-up reveal (once), per motion spec §11. */
+/**
+ * Scroll reveal per motion spec §11 — pure IntersectionObserver + CSS
+ * transitions (globals: .reveal-item). No animation library on the
+ * critical path, no forced layouts; content is visible whenever JS
+ * is slow or absent, and instantly under prefers-reduced-motion.
+ */
 export default function Reveal({
   children,
   className,
@@ -29,29 +32,34 @@ export default function Reveal({
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-    const targets: Element[] = stagger ? Array.from(el.children) : [el];
-    gsap.set(targets, { opacity: 0, y });
+    const targets: HTMLElement[] = stagger ? (Array.from(el.children) as HTMLElement[]) : [el];
 
-    const st = ScrollTrigger.create({
-      trigger: el,
-      start: REVEAL.start,
-      once: true,
-      onEnter: () =>
-        gsap.to(targets, {
-          opacity: 1,
-          y: 0,
-          duration: REVEAL.duration,
-          delay,
-          ease: REVEAL.ease,
-          stagger: stagger ? REVEAL.stagger : 0,
-          overwrite: true,
-        }),
+    // never hide content already in the viewport
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.86) return;
+
+    targets.forEach((t, i) => {
+      t.classList.add("reveal-item");
+      t.style.setProperty("--reveal-y", `${y}px`);
+      t.style.transitionDelay = `${delay + (stagger ? i * REVEAL.stagger : 0)}s`;
     });
 
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        targets.forEach((t) => t.classList.add("revealed"));
+      },
+      { rootMargin: "0px 0px -14% 0px" },
+    );
+    io.observe(el);
+
     return () => {
-      st.kill();
-      gsap.set(targets, { clearProps: "opacity,transform" });
+      io.disconnect();
+      targets.forEach((t) => {
+        t.classList.remove("reveal-item", "revealed");
+        t.style.removeProperty("--reveal-y");
+        t.style.transitionDelay = "";
+      });
     };
   }, [stagger, delay, y]);
 

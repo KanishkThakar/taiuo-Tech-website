@@ -14,7 +14,10 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
+  // "optional": no late font-swap repaint — the swap was re-triggering LCP at
+  // ~4s on throttled mobile. First uncached visit may keep the metric-adjusted
+  // fallback; cached visits render Inter. (v4 §10 LCP budget)
+  display: "optional",
 });
 
 export const metadata: Metadata = {

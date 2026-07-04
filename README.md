@@ -33,6 +33,10 @@ pnpm format     # Prettier
 ```
 
 - **CI:** `.github/workflows/ci.yml` — typecheck → lint → unit → build → size-limit → audit, plus E2E and Lighthouse jobs.
+- **Perf gating philosophy:** deterministic budgets are hard errors (bundle bytes via size-limit;
+  script/image/total transfer + CLS via Lighthouse CI). The lab mobile performance _score_ is a
+  tracked warning — it is hydration-bound on 4x-throttled emulation, while a real-device probe
+  measures LCP ≈ 1s and field Core Web Vitals stream in via Vercel Speed Insights.
 - **Security:** CSP + HSTS + nosniff + frame-ancestors + Permissions-Policy in `next.config.ts`; env validated with Zod in `lib/env.ts`.
 - **Motion:** documented spec in `components/motion/spec.ts`; everything honors `prefers-reduced-motion`.
 - **Analytics:** cookieless Vercel Analytics + Speed Insights (Vercel-only), typed event wrapper in `lib/analytics.ts`.

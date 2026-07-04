@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { Clock, Sparkles } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
@@ -40,23 +38,26 @@ export default function NewWay() {
   const oldRef = useRef<HTMLDivElement>(null);
   const newRef = useRef<HTMLDivElement>(null);
 
+  /* plain IntersectionObserver — no library needed to add a class */
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const cards = [oldRef.current, newRef.current].filter(Boolean) as HTMLDivElement[];
-    if (reduced) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       cards.forEach((c) => c.classList.add("revealed"));
       return;
     }
-    gsap.registerPlugin(ScrollTrigger);
-    const triggers = cards.map((c) =>
-      ScrollTrigger.create({
-        trigger: c,
-        start: "top 70%",
-        once: true,
-        onEnter: () => c.classList.add("revealed"),
-      }),
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.35 },
     );
-    return () => triggers.forEach((t) => t.kill());
+    cards.forEach((c) => io.observe(c));
+    return () => io.disconnect();
   }, []);
 
   return (

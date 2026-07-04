@@ -1,8 +1,6 @@
 "use client";
 
 import { type CSSProperties, type ReactNode, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { clampPercent } from "@/lib/count-format";
 
 /**
@@ -69,34 +67,30 @@ export default function BeforeAfterSlider({
     card.addEventListener("pointercancel", onUp);
     card.addEventListener("keydown", onKey);
 
-    let st: ScrollTrigger | undefined;
-    let tween: gsap.core.Tween | undefined;
+    /* intro sweep 88% → 50% on first view — plain IO + rAF, no library */
+    let io: IntersectionObserver | undefined;
+    let frameId = 0;
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.registerPlugin(ScrollTrigger);
-      const proxy = { v: 88 };
       posRef.current = 88;
       apply();
-      st = ScrollTrigger.create({
-        trigger: card,
-        start: "top 75%",
-        once: true,
-        onEnter: () => {
-          tween = gsap.to(proxy, {
-            v: 50,
-            duration: 1.1,
-            delay: 0.35,
-            ease: "power3.out",
-            onUpdate: () => {
-              if (draggingRef.current) {
-                tween?.kill();
-                return;
-              }
-              posRef.current = proxy.v;
-              apply();
-            },
-          });
+      io = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          io?.disconnect();
+          const t0 = performance.now() + 350;
+          const frame = (t: number) => {
+            if (draggingRef.current) return;
+            const p = Math.min(Math.max((t - t0) / 1100, 0), 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            posRef.current = 88 + (50 - 88) * eased;
+            apply();
+            if (p < 1) frameId = requestAnimationFrame(frame);
+          };
+          frameId = requestAnimationFrame(frame);
         },
-      });
+        { threshold: 0.4 },
+      );
+      io.observe(card);
     }
 
     return () => {
@@ -105,8 +99,8 @@ export default function BeforeAfterSlider({
       card.removeEventListener("pointerup", onUp);
       card.removeEventListener("pointercancel", onUp);
       card.removeEventListener("keydown", onKey);
-      st?.kill();
-      tween?.kill();
+      io?.disconnect();
+      cancelAnimationFrame(frameId);
     };
   }, []);
 

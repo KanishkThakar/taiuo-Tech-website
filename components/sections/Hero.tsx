@@ -3,42 +3,39 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "@/components/motion/MagneticButton";
-import { EASE_SMOOTH, HERO_BEATS } from "@/components/motion/spec";
 import { trackEvent } from "@/lib/analytics";
 import { HERO } from "@/lib/data";
 
 /**
- * Hero entrance is pure CSS (globals: .ha / .hl-line) so the H1 paints
- * without waiting for hydration — desktop gets the staged sequence,
- * mobile paints instantly (LCP-first). Only the desktop-only portrait
- * uses Motion, and only the portrait parallax uses GSAP.
+ * The whole hero entrance is pure CSS (globals: .ha / .hl-line / .hp-enter)
+ * so it starts at first paint with zero hydration dependency — desktop gets
+ * the staged sequence, mobile paints instantly (LCP-first, v4 §10).
+ * gsap is dynamic-imported post-paint purely for the portrait parallax.
  */
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
 
-  /* GSAP scrubbed parallax on the portrait (motion spec §11) */
+  /* portrait parallax — a 6-line rAF scroll handler, no library */
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    gsap.registerPlugin(ScrollTrigger);
-    const tween = gsap.to(parallaxRef.current, {
-      y: 130,
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
+    if (!window.matchMedia("(min-width: 900px)").matches) return;
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (parallaxRef.current && y < window.innerHeight) {
+          parallaxRef.current.style.transform = `translateY(${y * 0.16}px)`;
+        }
+        ticking = false;
+      });
     };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
@@ -51,21 +48,16 @@ export default function Hero() {
     >
       {/* ambient orbs */}
       <div
-        className="hero-orb right-[-8%] top-[-15%] h-[600px] w-[600px] bg-white/20"
+        className="hero-orb hero-orb-white right-[-8%] top-[-15%] h-[600px] w-[600px]"
         aria-hidden="true"
       />
       <div
-        className="hero-orb bottom-[-12%] left-[-6%] h-[420px] w-[420px] bg-[#9DADAD]/50 [animation-direction:reverse] [animation-duration:15s]"
+        className="hero-orb hero-orb-sage bottom-[-12%] left-[-6%] h-[420px] w-[420px] [animation-direction:reverse] [animation-duration:15s]"
         aria-hidden="true"
       />
 
-      {/* portrait — desktop only, so Motion here can't affect mobile LCP */}
-      <motion.div
-        initial={{ opacity: 0, x: 60 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: HERO_BEATS.visual, duration: 0.8, ease: EASE_SMOOTH }}
-        className="absolute inset-y-0 right-0 w-[46%] max-lg:w-[52%] max-[900px]:hidden"
-      >
+      {/* portrait — desktop only; CSS entrance, GSAP parallax post-paint */}
+      <div className="hp-enter absolute inset-y-0 right-0 w-[46%] max-lg:w-[52%] max-[900px]:hidden">
         <div
           ref={parallaxRef}
           className="relative h-full w-full [mask-image:linear-gradient(to_right,transparent_0%,#000_22%)]"
@@ -79,7 +71,7 @@ export default function Hero() {
             className="object-cover object-top"
           />
         </div>
-      </motion.div>
+      </div>
 
       <div className="container-x relative z-[2] w-full py-16 max-[900px]:text-center">
         <p className="ha ha-label caption-label mb-6 text-ink/60">{HERO.label}</p>

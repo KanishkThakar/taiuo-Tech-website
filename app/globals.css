@@ -184,6 +184,29 @@
   }
 }
 
+/* ── scroll reveal (Reveal.tsx) — CSS transition, IO adds .revealed ── */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 36px));
+  transition:
+    opacity 0.65s var(--ease-smooth),
+    transform 0.65s var(--ease-smooth);
+}
+.reveal-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── below-fold layout skipping ───────────────────────────────────
+   The document is ~11k px tall; without this Chrome lays out every
+   section before first paint (~2.5s style+layout on 4x-throttled
+   mobile). content-visibility defers offscreen sections entirely. */
+main#top > section:not(:first-of-type),
+main#top ~ footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 /* ── hero entrance ────────────────────────────────────────────────
    Pure CSS so it starts at first paint (no hydration dependency).
    Desktop-only: on mobile the hero paints instantly — LCP-first for
@@ -198,6 +221,17 @@
   to {
     transform: translateY(0);
   }
+}
+@keyframes hero-slide-in {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.hp-enter {
+  opacity: 0;
+  transform: translateX(60px);
+  animation: hero-slide-in 0.8s var(--ease-smooth) 1.2s forwards;
 }
 .hl-mask {
   display: block;
@@ -249,9 +283,16 @@
 .hero-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  /* soft edge via radial-gradient, not filter:blur — an 80px blur on a
+     600px layer cost ~1s of raster time on throttled mobile CPUs */
   pointer-events: none;
   animation: orb-float 20s ease-in-out infinite;
+}
+.hero-orb-white {
+  background: radial-gradient(circle, rgb(255 255 255 / 0.28) 0%, rgb(255 255 255 / 0) 65%);
+}
+.hero-orb-sage {
+  background: radial-gradient(circle, rgb(157 173 173 / 0.55) 0%, rgb(157 173 173 / 0) 65%);
 }
 
 /* ── press marquee (mobile) ───────────────────────────────────── */
