@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import HeroPortrait from "@/components/visuals/HeroPortrait";
 import { HERO } from "@/lib/data";
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -57,15 +58,25 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* portrait visual */}
+      {/* portrait */}
       <motion.div
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.2, duration: 0.8, ease: EASE }}
         className="absolute inset-y-0 right-0 w-[46%] max-lg:w-[52%] max-[900px]:hidden"
       >
-        <div ref={parallaxRef} className="h-full w-full">
-          <HeroPortrait className="h-full w-full opacity-90 [mask-image:linear-gradient(to_right,transparent_0%,#000_18%)]" />
+        <div
+          ref={parallaxRef}
+          className="relative h-full w-full [mask-image:linear-gradient(to_right,transparent_0%,#000_22%)]"
+        >
+          <Image
+            src="/images/hero-portrait.png"
+            alt="Portrait of a woman with softly lit, natural features"
+            fill
+            priority
+            sizes="(max-width: 900px) 0px, 46vw"
+            className="object-cover object-top"
+          />
         </div>
       </motion.div>
 
@@ -112,9 +123,9 @@ export default function Hero() {
           custom={0.95}
           className="mt-10 flex flex-wrap gap-4 max-[900px]:justify-center max-sm:[&>a]:flex-[1_1_100%]"
         >
-          <a href="#pricing" className="btn btn-white">
+          <Link href="/onboarding" className="btn btn-white">
             Start my plan
-          </a>
+          </Link>
           <a href="#how" className="btn btn-glass">
             How it works
           </a>

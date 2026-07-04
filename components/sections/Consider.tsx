@@ -1,13 +1,22 @@
+import Image from "next/image";
 import { Check } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
-import { SceneSocial } from "@/components/visuals/Scenes";
 import { CONSIDER_CHECKS, CONSIDER_POINTS } from "@/lib/data";
 
 /** 3.16 — closing argument over the warm social-event scene. */
 export default function Consider() {
   return (
     <section className="section-pad relative isolate overflow-hidden text-white">
-      <SceneSocial />
+      <div className="absolute inset-0 -z-10" aria-hidden="true">
+        <Image
+          src="/images/fullbleed-impressions.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50" />
+      </div>
       <div className="container-x grid grid-cols-[1.1fr_1fr] items-center gap-16 max-lg:grid-cols-1">
         <Reveal stagger>
           <h2 className="h2-display text-white">

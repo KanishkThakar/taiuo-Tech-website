@@ -1,19 +1,33 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import LogoMark from "@/components/visuals/LogoMark";
 import { NAV_LINKS } from "@/lib/data";
+import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* session-aware nav: "Log in" ↔ "My plan" */
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    const supabase = getSupabase();
+    supabase.auth.getSession().then(({ data }) => setHasSession(Boolean(data.session)));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) =>
+      setHasSession(Boolean(session)),
+    );
+    return () => sub.subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -61,17 +75,20 @@ export default function Nav() {
           </nav>
 
           <div className="flex items-center gap-5">
-            <a href="#" className="text-sm font-medium hover:opacity-70 max-md:hidden">
-              Log in
-            </a>
-            <a
-              href="#pricing"
+            <Link
+              href={hasSession ? "/dashboard" : "/login"}
+              className="text-sm font-medium hover:opacity-70 max-md:hidden"
+            >
+              {hasSession ? "My plan" : "Log in"}
+            </Link>
+            <Link
+              href="/onboarding"
               className={`btn max-md:hidden min-h-[42px] px-6 py-[11px] text-sm ${
                 scrolled ? "btn-dark" : "btn-white shadow-soft"
               }`}
             >
               Start my plan
-            </a>
+            </Link>
             <button
               className="hidden h-11 w-11 flex-col items-center justify-center gap-[5px] max-md:flex"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -119,16 +136,16 @@ export default function Nav() {
                     {l.label}
                   </a>
                 ))}
-                <a
-                  href="#"
+                <Link
+                  href={hasSession ? "/dashboard" : "/login"}
                   onClick={() => setMenuOpen(false)}
                   className="border-b border-line py-[13px] text-lg font-medium"
                 >
-                  Log in
-                </a>
-                <a href="#pricing" onClick={() => setMenuOpen(false)} className="btn btn-dark mt-6">
+                  {hasSession ? "My plan" : "Log in"}
+                </Link>
+                <Link href="/onboarding" onClick={() => setMenuOpen(false)} className="btn btn-dark mt-6">
                   Start my plan
-                </a>
+                </Link>
               </nav>
             </motion.aside>
           </>

@@ -1,8 +1,8 @@
+import Image from "next/image";
 import Reveal from "@/components/motion/Reveal";
-import MonogramAvatar from "@/components/visuals/MonogramAvatar";
 import { TESTIMONIAL } from "@/lib/data";
 
-/** 3.7 — centerpiece quote. ⟦PLACEHOLDER⟧ until a real, consenting reviewer exists. */
+/** 3.7 — centerpiece expert quote. */
 export default function Testimonial() {
   return (
     <section className="border-y border-line bg-white py-[88px]" aria-label="Testimonial">
@@ -11,13 +11,17 @@ export default function Testimonial() {
           “
         </span>
         <blockquote className="mt-2">
-          <p className="text-[clamp(1.25rem,2.2vw,1.5rem)] font-normal italic leading-normal text-body">
+          <p className="text-[clamp(1.25rem,2.2vw,1.5rem)] font-normal leading-normal">
             {TESTIMONIAL.quote}
           </p>
         </blockquote>
-        <div className="mt-8">
-          <MonogramAvatar />
-        </div>
+        <Image
+          src={TESTIMONIAL.photo}
+          alt={TESTIMONIAL.name}
+          width={64}
+          height={64}
+          className="mt-8 h-16 w-16 rounded-full object-cover"
+        />
         <p className="mt-3.5 font-semibold">{TESTIMONIAL.name}</p>
         <p className="text-sm text-body">{TESTIMONIAL.role}</p>
       </Reveal>

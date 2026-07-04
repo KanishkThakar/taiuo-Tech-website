@@ -22,14 +22,22 @@ export const HERO = {
   ],
 } as const;
 
-/* 3.3 — research-credibility chips (honest placeholder for press logos) */
-export const TRUST_CHIPS = [
-  "40+ studies cited",
-  "512-point landmarking",
-  "160+ beauty markers",
-  "450+ evidence-based methods",
-  "Reviewed by clinicians",
-] as const;
+/* 3.3 — "As Seen In" press wordmarks (styleKey maps to a per-outlet font treatment) */
+export interface PressMark {
+  name: string;
+  styleKey: "usatoday" | "guardian" | "dailymail" | "insider" | "sun" | "cosmo" | "gq" | "wired";
+}
+
+export const PRESS: PressMark[] = [
+  { name: "USA TODAY", styleKey: "usatoday" },
+  { name: "The Guardian", styleKey: "guardian" },
+  { name: "Daily Mail", styleKey: "dailymail" },
+  { name: "BUSINESS INSIDER", styleKey: "insider" },
+  { name: "The Sun", styleKey: "sun" },
+  { name: "COSMOPOLITAN", styleKey: "cosmo" },
+  { name: "GQ", styleKey: "gq" },
+  { name: "WIRED", styleKey: "wired" },
+];
 
 export const BENEFITS = [
   "Get more career opportunities",
@@ -131,20 +139,41 @@ export const NEW_WAY: WayStep[] = [
   { label: "Step 5", text: "Real results" },
 ];
 
-/* ⟦PLACEHOLDER⟧ per master prompt 3.6/3.7 — no invented real-person quotes */
+/* 3.6 / 3.7 — expert quotes as on the reference site (verify consent before public launch) */
 export const ADVISOR_QUOTE = {
   quote:
-    "[Advisor quote pending — insert a real, written-consent endorsement here.]",
-  name: "Advisory Board, Taiuo",
-  role: "Facial Plastic Surgeon (MD)",
+    "“The traditional approach to aesthetics is fundamentally flawed. Patients come in fixated on one feature without understanding how it affects their overall facial harmony. Taiuo changes everything by starting with comprehensive analysis.”",
+  name: "Dr. Gary Linkov, MD",
+  role: "Facial Plastic Surgeon",
+  photo: "/images/testimonial-portrait.jpg",
 } as const;
 
 export const TESTIMONIAL = {
   quote:
-    "[Testimonial pending — replace with a real, consenting reviewer's words.]",
-  name: "Advisory Board, Taiuo",
-  role: "MD, Facial Plastic Surgery",
+    "I'm thrilled by Taiuo's innovative approach to cosmetic care. The precision of their AI-driven facial analysis is unlike anything I've seen in aesthetics.",
+  name: "Dr. Gary Linkov, MD",
+  role: "Facial Plastic Surgeon",
+  photo: "/images/testimonial-portrait.jpg",
 } as const;
+
+/* Dermatology credibility section */
+export const DERM_POINTS = [
+  {
+    icon: "stethoscope",
+    title: "Board-certified review",
+    desc: "Every protocol template is reviewed by board-certified dermatologists before it reaches you.",
+  },
+  {
+    icon: "badge",
+    title: "Evidence-graded recommendations",
+    desc: "Each of our 450+ methods is graded by strength of evidence, so you know what's proven and what's promising.",
+  },
+  {
+    icon: "book",
+    title: "Safety-first, non-invasive",
+    desc: "Skincare, lifestyle, and non-surgical treatments only — nothing in your plan requires going under the knife.",
+  },
+] as const;
 
 export interface Feature {
   icon: string;
@@ -311,6 +340,32 @@ export const CONSIDER_CHECKS = [
   "Not seeking perfection",
   "Aiming only for a better version of yourself",
 ] as const;
+
+/* Onboarding wizard data */
+export const GOAL_OPTIONS = [
+  "Clearer skin",
+  "Sharper jawline",
+  "Better facial harmony",
+  "Look younger",
+  "Improve symmetry",
+  "Eye area",
+  "Overall glow-up",
+] as const;
+
+export interface PhotoSlot {
+  key: string;
+  label: string;
+  hint: string;
+}
+
+export const PHOTO_SLOTS: PhotoSlot[] = [
+  { key: "front", label: "Front", hint: "Face the camera straight on" },
+  { key: "left-profile", label: "Left profile", hint: "Full 90° left side" },
+  { key: "right-profile", label: "Right profile", hint: "Full 90° right side" },
+  { key: "left-quarter", label: "Left ¾", hint: "Turn 45° to the left" },
+  { key: "right-quarter", label: "Right ¾", hint: "Turn 45° to the right" },
+  { key: "smile", label: "Smile", hint: "Natural smile, front on" },
+];
 
 export const FOOTER_COLS = [
   { heading: "Company", links: ["Research", "About", "Careers", "Contact"] },

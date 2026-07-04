@@ -1,6 +1,6 @@
+import Image from "next/image";
 import { Shield, Sparkles, Target, type LucideIcon } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
-import { SceneSelfcare } from "@/components/visuals/Scenes";
 import { OBJECTION_CARDS } from "@/lib/data";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -13,7 +13,19 @@ const ICONS: Record<string, LucideIcon> = {
 export default function Objection() {
   return (
     <section className="section-pad relative isolate overflow-hidden text-white">
-      <SceneSelfcare />
+      <div className="absolute inset-0 -z-10" aria-hidden="true">
+        <Image
+          src="/images/fullbleed-selfcare.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.72) 100%)" }}
+        />
+      </div>
       <div className="container-x">
         <Reveal stagger className="max-w-[620px]">
           <h2 className="h2-display text-white">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "@/components/motion/Reveal";
 
 /** 3.11 — CTA banner on the sage gradient. */
@@ -18,9 +19,9 @@ export default function CtaBand() {
           for your unique facial structure.
         </p>
         <div className="mt-10">
-          <a href="#pricing" className="btn btn-dark px-10 py-[17px] text-[17px] hover:scale-[1.03]">
+          <Link href="/onboarding" className="btn btn-dark px-10 py-[17px] text-[17px] hover:scale-[1.03]">
             Start my plan
-          </a>
+          </Link>
         </div>
       </Reveal>
     </section>

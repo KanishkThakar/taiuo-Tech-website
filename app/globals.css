@@ -214,6 +214,56 @@
   animation: marquee-x 28s linear infinite;
 }
 
+/* ── "As Seen In" wordmark treatments ─────────────────────────── */
+.pm {
+  white-space: nowrap;
+  color: var(--color-ink);
+  opacity: 0.45;
+  transition: opacity 0.2s;
+  font-size: 15px;
+}
+.pm:hover {
+  opacity: 0.85;
+}
+.pm-usatoday {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.pm-guardian {
+  font-family: Georgia, serif;
+  font-weight: 700;
+}
+.pm-dailymail {
+  font-family: Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.pm-insider {
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+}
+.pm-sun {
+  font-family: Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+}
+.pm-cosmo {
+  font-family: Georgia, serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.pm-gq {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+}
+.pm-wired {
+  font-weight: 800;
+  letter-spacing: 0.28em;
+}
+
 /* ── "old way / new way" timelines ────────────────────────────── */
 .way-steps {
   position: relative;

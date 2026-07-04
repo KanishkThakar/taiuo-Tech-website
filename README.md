@@ -33,12 +33,20 @@ lib/supabase.ts      Supabase client factory (env-driven)
 
 ## Environment (Supabase)
 
-Copy `.env.example` → `.env.local` and fill from Supabase Dashboard → Project Settings → API:
+1. Copy `.env.example` → `.env.local` and fill from Supabase Dashboard → Project Settings → API:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
+
+2. Run `supabase/schema.sql` once in Supabase Dashboard → SQL Editor — creates `profiles`,
+   `analysis_requests`, and the private `face-photos` bucket with own-data-only RLS.
+3. (Smoothest sign-up flow) Supabase Dashboard → Authentication → Sign In / Up →
+   disable "Confirm email" — otherwise new users must confirm via email before logging in.
+
+Auth pages: `/login`, `/signup` · Onboarding wizard: `/onboarding` (6 angle-labeled photo
+uploads → storage + analysis request) · Status: `/dashboard`.
 
 ## Deploy (Vercel)
 
@@ -53,6 +61,8 @@ Phase 2: product web app (auth → 6-photo upload → analysis → dashboard →
 Phase 3: mobile app (React Native + Expo).
 See Section 9 of the master prompt — one phase ships fully before the next starts.
 
-## Content honesty rules
+## Before a public launch
 
-Endorsements, testimonials, and press logos are rendered as explicit placeholders until real, consented ones exist. Keep it that way (Section 3 + note in `lib/data.ts`).
+The expert quotes, press names, and "50,000+" figures replicate the original reference
+design for this pre-launch build — verify permissions/accuracy (or swap them) before
+marketing the site publicly.

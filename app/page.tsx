@@ -6,6 +6,7 @@ import Stats from "@/components/sections/Stats";
 import NewWay from "@/components/sections/NewWay";
 import Testimonial from "@/components/sections/Testimonial";
 import Analysis from "@/components/sections/Analysis";
+import Dermatology from "@/components/sections/Dermatology";
 import Factors from "@/components/sections/Factors";
 import Learn from "@/components/sections/Learn";
 import CtaBand from "@/components/sections/CtaBand";
@@ -55,6 +56,7 @@ export default function Home() {
         <NewWay />
         <Testimonial />
         <Analysis />
+        <Dermatology />
         <Factors />
         <Learn />
         <CtaBand />

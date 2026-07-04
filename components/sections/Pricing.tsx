@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Check } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
 import { PRICE_FEATURES } from "@/lib/data";
@@ -36,9 +37,9 @@ export default function Pricing() {
               <span className="text-lg text-white/50">/ year</span>
             </div>
             <p className="mt-2.5 text-sm text-white/50">No hidden fees. Cancel anytime.</p>
-            <a href="#" className="btn btn-white mt-[26px] w-full hover:bg-white/90">
+            <Link href="/onboarding" className="btn btn-white mt-[26px] w-full hover:bg-white/90">
               Get Access
-            </a>
+            </Link>
             {/* ⟦NOTE⟧ soften to a true figure or "Join the waitlist" before launch */}
             <div className="mt-6 flex justify-center gap-3.5 text-xs text-white/40">
               <span>Trusted by 50,000+</span>

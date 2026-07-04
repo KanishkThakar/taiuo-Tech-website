@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import { Clock, Sparkles } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
-import MonogramAvatar from "@/components/visuals/MonogramAvatar";
 import { ADVISOR_QUOTE, NEW_WAY, OLD_WAY, type WayStep } from "@/lib/data";
 
 function WaySteps({ steps, light }: { steps: WayStep[]; light?: boolean }) {
@@ -85,12 +85,17 @@ export default function NewWay() {
           <WaySteps steps={NEW_WAY} light />
         </div>
 
-        {/* ⟦PLACEHOLDER⟧ advisor endorsement — honest until a real one exists */}
         <Reveal className="mx-auto mt-16 grid max-w-[820px] grid-cols-[64px_1fr] items-start gap-6 max-md:grid-cols-1">
-          <MonogramAvatar />
+          <Image
+            src={ADVISOR_QUOTE.photo}
+            alt={ADVISOR_QUOTE.name}
+            width={64}
+            height={64}
+            className="h-16 w-16 rounded-full object-cover"
+          />
           <figure>
             <blockquote>
-              <p className="text-[1.06rem] italic text-body">{ADVISOR_QUOTE.quote}</p>
+              <p className="text-[1.06rem] text-body">{ADVISOR_QUOTE.quote}</p>
             </blockquote>
             <figcaption className="mt-3.5 text-sm">
               <strong className="font-semibold">{ADVISOR_QUOTE.name}</strong>

@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Reveal from "@/components/motion/Reveal";
 import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
-import FaceIllustration from "@/components/visuals/FaceIllustration";
 import { BENEFITS } from "@/lib/data";
 
 /** 3.4 — Life-changing Transformations (illustrative before/after pairs). */
@@ -32,16 +32,24 @@ export default function Transformations() {
         <div className="grid grid-cols-2 gap-5 max-lg:max-w-[640px] max-sm:grid-cols-1">
           <Reveal>
             <BeforeAfterSlider
-              ariaLabel="Before and after comparison 1 — illustrative"
-              before={<FaceIllustration variant="before" />}
-              after={<FaceIllustration variant="after" />}
+              ariaLabel="Before and after comparison 1"
+              before={
+                <Image src="/images/transform-before-1.jpg" alt="Before transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+              }
+              after={
+                <Image src="/images/transform-after-1.jpg" alt="After transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+              }
             />
           </Reveal>
           <Reveal delay={0.15}>
             <BeforeAfterSlider
-              ariaLabel="Before and after comparison 2 — illustrative"
-              before={<FaceIllustration variant="before" flip />}
-              after={<FaceIllustration variant="after" flip />}
+              ariaLabel="Before and after comparison 2"
+              before={
+                <Image src="/images/transform-before-2.jpg" alt="Before transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+              }
+              after={
+                <Image src="/images/transform-after-2.jpg" alt="After transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+              }
             />
           </Reveal>
         </div>
