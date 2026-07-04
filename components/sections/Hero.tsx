@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { motion, type Variants } from "motion/react";
+import { motion } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MagneticButton from "@/components/motion/MagneticButton";
@@ -11,39 +11,12 @@ import { EASE_SMOOTH, HERO_BEATS } from "@/components/motion/spec";
 import { trackEvent } from "@/lib/analytics";
 import { HERO } from "@/lib/data";
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay, duration: 0.6, ease: EASE_SMOOTH },
-  }),
-};
-
-/** Apple-style masked line reveal: text rises out of an overflow clip. */
-function MaskedLine({
-  children,
-  delay,
-  className,
-}: {
-  children: string;
-  delay: number;
-  className?: string;
-}) {
-  return (
-    <span className="block overflow-hidden">
-      <motion.span
-        initial={{ y: "110%" }}
-        animate={{ y: 0 }}
-        transition={{ delay, duration: 0.7, ease: EASE_SMOOTH }}
-        className={`block ${className ?? ""}`}
-      >
-        {children}
-      </motion.span>
-    </span>
-  );
-}
-
+/**
+ * Hero entrance is pure CSS (globals: .ha / .hl-line) so the H1 paints
+ * without waiting for hydration — desktop gets the staged sequence,
+ * mobile paints instantly (LCP-first). Only the desktop-only portrait
+ * uses Motion, and only the portrait parallax uses GSAP.
+ */
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
@@ -86,7 +59,7 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* portrait */}
+      {/* portrait — desktop only, so Motion here can't affect mobile LCP */}
       <motion.div
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}
@@ -109,40 +82,22 @@ export default function Hero() {
       </motion.div>
 
       <div className="container-x relative z-[2] w-full py-16 max-[900px]:text-center">
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={HERO_BEATS.label}
-          className="caption-label mb-6 text-ink/60"
-        >
-          {HERO.label}
-        </motion.p>
+        <p className="ha ha-label caption-label mb-6 text-ink/60">{HERO.label}</p>
 
         <h1 className="h1-display">
-          <MaskedLine delay={HERO_BEATS.h1Line1}>{HERO.h1Line1}</MaskedLine>
-          <MaskedLine delay={HERO_BEATS.h1Line2} className="font-light text-white/85">
-            {HERO.h1Line2}
-          </MaskedLine>
+          <span className="hl-mask">
+            <span className="hl-line hl-line-1">{HERO.h1Line1}</span>
+          </span>
+          <span className="hl-mask">
+            <span className="hl-line hl-line-2 font-light text-white/85">{HERO.h1Line2}</span>
+          </span>
         </h1>
 
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={HERO_BEATS.subtitle}
-          className="mt-6 max-w-[440px] text-lg text-ink/70 max-[900px]:mx-auto"
-        >
+        <p className="ha ha-sub mt-6 max-w-[440px] text-lg text-ink/70 max-[900px]:mx-auto">
           {HERO.subtitle}
-        </motion.p>
+        </p>
 
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={HERO_BEATS.ctas}
-          className="mt-10 flex flex-wrap gap-4 max-[900px]:justify-center max-sm:[&>*]:flex-[1_1_100%]"
-        >
+        <div className="ha ha-ctas mt-10 flex flex-wrap gap-4 max-[900px]:justify-center max-sm:[&>*]:flex-[1_1_100%]">
           <MagneticButton>
             <Link
               href="/onboarding"
@@ -155,15 +110,9 @@ export default function Hero() {
           <a href="#how" className="btn btn-glass">
             How it works
           </a>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          custom={HERO_BEATS.badges}
-          className="mt-[72px] flex max-w-[640px] max-[900px]:mx-auto max-[900px]:justify-center max-sm:mt-14 max-sm:flex-col max-sm:items-center max-sm:gap-4"
-        >
+        <div className="ha ha-badges mt-[72px] flex max-w-[640px] max-[900px]:mx-auto max-[900px]:justify-center max-sm:mt-14 max-sm:flex-col max-sm:items-center max-sm:gap-4">
           {HERO.badges.map((b, i) => (
             <div
               key={b.title}
@@ -173,7 +122,7 @@ export default function Hero() {
               <p className="mt-0.5 text-[12.5px] text-ink/55">{b.sub}</p>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

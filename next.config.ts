@@ -18,7 +18,8 @@ const CSP = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  "upgrade-insecure-requests",
+  // no upgrade-insecure-requests: production is HTTPS+HSTS anyway, and webkit
+  // applies it to http://localhost in CI, breaking every asset load
 ].join("; ");
 
 const SECURITY_HEADERS = [
