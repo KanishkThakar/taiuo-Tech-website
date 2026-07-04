@@ -8,9 +8,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
-import { FEATURES } from "@/lib/data";
+import { FEATURES, type FeatureIconKey } from "@/lib/data";
 
-const ICONS: Record<string, LucideIcon> = {
+const ICONS: Record<FeatureIconKey, LucideIcon> = {
   scan: ScanFace,
   eye: Eye,
   flask: FlaskConical,

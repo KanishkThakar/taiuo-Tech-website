@@ -20,6 +20,25 @@ pnpm dev        # http://localhost:3000
 pnpm build      # production build (SSG)
 ```
 
+## Quality gates (v4 — all must be green; CI enforces them on every push/PR)
+
+```bash
+pnpm typecheck  # TS strict + noUncheckedIndexedAccess + exactOptionalPropertyTypes
+pnpm lint       # ESLint (next/core-web-vitals)
+pnpm test       # Vitest — data integrity, count-up formats, slider math
+pnpm test:e2e   # Playwright (chromium/webkit/mobile) — sections, tabs, accordion, menu, axe
+pnpm size       # bundle budgets (.size-limit.json)
+pnpm lhci       # Lighthouse budgets (≥98 perf / 100 a11y / 100 BP / 100 SEO)
+pnpm format     # Prettier
+```
+
+- **CI:** `.github/workflows/ci.yml` — typecheck → lint → unit → build → size-limit → audit, plus E2E and Lighthouse jobs.
+- **Security:** CSP + HSTS + nosniff + frame-ancestors + Permissions-Policy in `next.config.ts`; env validated with Zod in `lib/env.ts`.
+- **Motion:** documented spec in `components/motion/spec.ts`; everything honors `prefers-reduced-motion`.
+- **Analytics:** cookieless Vercel Analytics + Speed Insights (Vercel-only), typed event wrapper in `lib/analytics.ts`.
+- **A11y:** axe reports zero serious/critical violations; tokens tuned to WCAG AA contrast.
+- Pre-commit: husky + lint-staged (prettier + eslint on staged files).
+
 ## Structure
 
 ```

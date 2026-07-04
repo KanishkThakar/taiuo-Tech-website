@@ -23,16 +23,14 @@ interface AnalysisRequest {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  // starts "loading" only when a backend exists to load from
+  const [loading, setLoading] = useState<boolean>(() => isSupabaseConfigured());
   const [profile, setProfile] = useState<Profile | null>(null);
   const [request, setRequest] = useState<AnalysisRequest | null>(null);
   const [photoUrls, setPhotoUrls] = useState<{ label: string; url: string }[]>([]);
 
   useEffect(() => {
-    if (!isSupabaseConfigured()) {
-      setLoading(false);
-      return;
-    }
+    if (!isSupabaseConfigured()) return;
     const supabase = getSupabase();
     (async () => {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -44,7 +42,11 @@ export default function DashboardPage() {
       const uid = session.user.id;
 
       const [{ data: profileRow }, { data: requestRows }, { data: objects }] = await Promise.all([
-        supabase.from("profiles").select("full_name, birth_year, gender, goals").eq("id", uid).maybeSingle(),
+        supabase
+          .from("profiles")
+          .select("full_name, birth_year, gender, goals")
+          .eq("id", uid)
+          .maybeSingle(),
         supabase
           .from("analysis_requests")
           .select("id, status, created_at")
@@ -58,7 +60,9 @@ export default function DashboardPage() {
 
       if (objects && objects.length > 0) {
         const paths = objects.map((o) => `${uid}/${o.name}`);
-        const { data: signed } = await supabase.storage.from("face-photos").createSignedUrls(paths, 3600);
+        const { data: signed } = await supabase.storage
+          .from("face-photos")
+          .createSignedUrls(paths, 3600);
         if (signed) {
           setPhotoUrls(
             signed.flatMap((s) => {
@@ -81,7 +85,11 @@ export default function DashboardPage() {
   };
 
   const requestDate = request
-    ? new Date(request.created_at).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })
+    ? new Date(request.created_at).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
     : null;
 
   return (
@@ -98,7 +106,10 @@ export default function DashboardPage() {
                 </h1>
                 <p className="mt-1.5 text-[15px] text-body">Your Taiuo plan at a glance.</p>
               </div>
-              <button onClick={signOut} className="flex items-center gap-1.5 text-sm font-medium text-body transition-colors hover:text-ink">
+              <button
+                onClick={signOut}
+                className="flex items-center gap-1.5 text-sm font-medium text-body transition-colors hover:text-ink"
+              >
                 <LogOut className="h-4 w-4" /> Sign out
               </button>
             </div>
@@ -142,7 +153,9 @@ export default function DashboardPage() {
 
             {profile && (
               <div className="mt-5 rounded-2xl border border-line p-6">
-                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-faint">Profile</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-faint">
+                  Profile
+                </h3>
                 <p className="mt-2.5 text-[15px]">
                   {profile.full_name} {profile.birth_year ? `· born ${profile.birth_year}` : ""}{" "}
                   {profile.gender ? `· ${profile.gender}` : ""}
@@ -150,7 +163,10 @@ export default function DashboardPage() {
                 {profile.goals && profile.goals.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2">
                     {profile.goals.map((g) => (
-                      <span key={g} className="rounded-full bg-sage-base/15 px-3 py-1 text-xs font-medium text-[#4E5F5F]">
+                      <span
+                        key={g}
+                        className="rounded-full bg-sage-base/15 px-3 py-1 text-xs font-medium text-[#4E5F5F]"
+                      >
                         {g}
                       </span>
                     ))}
@@ -161,12 +177,18 @@ export default function DashboardPage() {
 
             {photoUrls.length > 0 && (
               <div className="mt-5 rounded-2xl border border-line p-6">
-                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-faint">Your photos</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-[0.08em] text-faint">
+                  Your photos
+                </h3>
                 <div className="mt-4 grid grid-cols-6 gap-3 max-sm:grid-cols-3">
                   {photoUrls.map((p) => (
                     <figure key={p.url} className="text-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.url} alt={p.label} className="aspect-[3/4] w-full rounded-xl object-cover" />
+                      <img
+                        src={p.url}
+                        alt={p.label}
+                        className="aspect-[3/4] w-full rounded-xl object-cover"
+                      />
                       <figcaption className="mt-1 text-[11px] text-faint">{p.label}</figcaption>
                     </figure>
                   ))}

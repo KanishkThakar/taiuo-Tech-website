@@ -14,7 +14,10 @@ export default function HowItWorks() {
           </p>
         </Reveal>
 
-        <Reveal stagger className="relative grid grid-cols-3 gap-12 before:absolute before:left-[18%] before:right-[18%] before:top-6 before:border-t-2 before:border-dashed before:border-line max-md:grid-cols-1 max-md:gap-10 max-md:before:hidden">
+        <Reveal
+          stagger
+          className="relative grid grid-cols-3 gap-12 before:absolute before:left-[18%] before:right-[18%] before:top-6 before:border-t-2 before:border-dashed before:border-line max-md:grid-cols-1 max-md:gap-10 max-md:before:hidden"
+        >
           {HOW_STEPS.map((s, i) => (
             <div key={s.title} className="relative bg-white text-center">
               <span className="relative z-[1] inline-grid h-12 w-12 place-items-center rounded-full bg-ink text-[19px] font-semibold text-white">

@@ -3,7 +3,7 @@ import { Shield, Sparkles, Target, type LucideIcon } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
 import { OBJECTION_CARDS } from "@/lib/data";
 
-const ICONS: Record<string, LucideIcon> = {
+const ICONS: Record<(typeof OBJECTION_CARDS)[number]["icon"], LucideIcon> = {
   sparkles: Sparkles,
   target: Target,
   shield: Shield,
@@ -23,7 +23,9 @@ export default function Objection() {
         />
         <div
           className="absolute inset-0"
-          style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.72) 100%)" }}
+          style={{
+            background: "linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.72) 100%)",
+          }}
         />
       </div>
       <div className="container-x">

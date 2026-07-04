@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { Check } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
+import TrackedLink from "@/components/motion/TrackedLink";
 import { PRICE_FEATURES } from "@/lib/data";
 
 /** 3.13 — dark pricing section. */
@@ -23,7 +23,11 @@ export default function Pricing() {
               key={f}
               className="flex items-center gap-3.5 border-b border-white/10 py-[13px] text-[15.5px] text-white/90"
             >
-              <Check className="h-5 w-5 flex-none text-green-400" strokeWidth={2} aria-hidden="true" />
+              <Check
+                className="h-5 w-5 flex-none text-green-400"
+                strokeWidth={2}
+                aria-hidden="true"
+              />
               {f}
             </div>
           ))}
@@ -37,11 +41,15 @@ export default function Pricing() {
               <span className="text-lg text-white/50">/ year</span>
             </div>
             <p className="mt-2.5 text-sm text-white/50">No hidden fees. Cancel anytime.</p>
-            <Link href="/onboarding" className="btn btn-white mt-[26px] w-full hover:bg-white/90">
+            <TrackedLink
+              href="/onboarding"
+              event={{ name: "cta_click", props: { location: "pricing" } }}
+              className="btn btn-white mt-[26px] w-full hover:bg-white/90"
+            >
               Get Access
-            </Link>
+            </TrackedLink>
             {/* ⟦NOTE⟧ soften to a true figure or "Join the waitlist" before launch */}
-            <div className="mt-6 flex justify-center gap-3.5 text-xs text-white/40">
+            <div className="mt-6 flex justify-center gap-3.5 text-xs text-white/60">
               <span>Trusted by 50,000+</span>
               <span>|</span>
               <span>Secure Payment</span>

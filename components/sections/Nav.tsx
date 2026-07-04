@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import LogoMark from "@/components/visuals/LogoMark";
 import { NAV_LINKS } from "@/lib/data";
-import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -19,15 +18,27 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* session-aware nav: "Log in" ↔ "My plan" */
+  /* session-aware nav: "Log in" ↔ "My plan".
+     supabase-js is imported lazily so it stays out of the homepage's
+     first-load bundle (v4 §10 budget). */
   useEffect(() => {
-    if (!isSupabaseConfigured()) return;
-    const supabase = getSupabase();
-    supabase.auth.getSession().then(({ data }) => setHasSession(Boolean(data.session)));
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) =>
-      setHasSession(Boolean(session)),
-    );
-    return () => sub.subscription.unsubscribe();
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
+    (async () => {
+      const { getSupabase, isSupabaseConfigured } = await import("@/lib/supabase");
+      if (cancelled || !isSupabaseConfigured()) return;
+      const supabase = getSupabase();
+      const { data } = await supabase.auth.getSession();
+      if (!cancelled) setHasSession(Boolean(data.session));
+      const { data: sub } = supabase.auth.onAuthStateChange((_event, session) =>
+        setHasSession(Boolean(session)),
+      );
+      unsubscribe = () => sub.subscription.unsubscribe();
+    })();
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, []);
 
   useEffect(() => {
@@ -96,9 +107,15 @@ export default function Nav() {
               aria-controls="mobile-menu"
               onClick={() => setMenuOpen((o) => !o)}
             >
-              <span className={`block h-0.5 w-[22px] rounded bg-ink transition-transform duration-300 ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`} />
-              <span className={`block h-0.5 w-[22px] rounded bg-ink transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block h-0.5 w-[22px] rounded bg-ink transition-transform duration-300 ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`} />
+              <span
+                className={`block h-0.5 w-[22px] rounded bg-ink transition-transform duration-300 ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`}
+              />
+              <span
+                className={`block h-0.5 w-[22px] rounded bg-ink transition-opacity duration-200 ${menuOpen ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`block h-0.5 w-[22px] rounded bg-ink transition-transform duration-300 ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`}
+              />
             </button>
           </div>
         </div>
@@ -143,7 +160,11 @@ export default function Nav() {
                 >
                   {hasSession ? "My plan" : "Log in"}
                 </Link>
-                <Link href="/onboarding" onClick={() => setMenuOpen(false)} className="btn btn-dark mt-6">
+                <Link
+                  href="/onboarding"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn btn-dark mt-6"
+                >
                   Start my plan
                 </Link>
               </nav>

@@ -7,7 +7,10 @@ export default function Testimonial() {
   return (
     <section className="border-y border-line bg-white py-[88px]" aria-label="Testimonial">
       <Reveal stagger className="container-x flex max-w-[760px] flex-col items-center text-center">
-        <span className="font-serif text-6xl leading-none text-sage-mid opacity-45" aria-hidden="true">
+        <span
+          className="font-serif text-6xl leading-none text-sage-mid opacity-45"
+          aria-hidden="true"
+        >
           “
         </span>
         <blockquote className="mt-2">

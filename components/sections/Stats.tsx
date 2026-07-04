@@ -4,6 +4,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { motion, type Variants } from "motion/react";
 import CountUp from "@/components/motion/CountUp";
 import Reveal from "@/components/motion/Reveal";
+import { trackEvent } from "@/lib/analytics";
 import { STAT_CATEGORIES, STATS } from "@/lib/data";
 
 const grid: Variants = {
@@ -30,7 +31,10 @@ export default function Stats() {
           </h2>
         </Reveal>
 
-        <Tabs.Root defaultValue="Finances">
+        <Tabs.Root
+          defaultValue="Finances"
+          onValueChange={(category) => trackEvent({ name: "stats_tab", props: { category } })}
+        >
           <Reveal>
             <Tabs.List className="mt-11 flex flex-wrap gap-2.5" aria-label="Study categories">
               {STAT_CATEGORIES.map((cat) => (

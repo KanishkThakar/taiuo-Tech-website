@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
-import { Field, ProductShell, SupabaseGate, btnPrimary, inputCls } from "@/components/product/shell";
+import {
+  Field,
+  ProductShell,
+  SupabaseGate,
+  btnPrimary,
+  inputCls,
+} from "@/components/product/shell";
 import { getSupabase } from "@/lib/supabase";
 
 export default function LoginPage() {
@@ -25,10 +31,7 @@ export default function LoginPage() {
         return;
       }
       // route to dashboard if they already submitted an analysis, else onboarding
-      const { data: requests } = await supabase
-        .from("analysis_requests")
-        .select("id")
-        .limit(1);
+      const { data: requests } = await supabase.from("analysis_requests").select("id").limit(1);
       router.replace(requests && requests.length > 0 ? "/dashboard" : "/onboarding");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");

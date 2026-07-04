@@ -18,13 +18,17 @@ export default function Footer() {
 
         {FOOTER_COLS.map((col) => (
           <div key={col.heading}>
-            <h4 className="caption-label mb-[18px] text-xs font-semibold text-faint">{col.heading}</h4>
+            <h4 className="caption-label mb-[18px] text-xs font-semibold text-faint">
+              {col.heading}
+            </h4>
             <ul className="grid gap-2.5">
               {col.links.map((l) => (
                 <li key={l}>
                   <a href="#" className="text-sm text-body transition-colors hover:text-ink">
                     {l}
-                    {"external" in col && col.external ? <span className="ml-1 text-xs">↗</span> : null}
+                    {"external" in col && col.external ? (
+                      <span className="ml-1 text-xs">↗</span>
+                    ) : null}
                   </a>
                 </li>
               ))}

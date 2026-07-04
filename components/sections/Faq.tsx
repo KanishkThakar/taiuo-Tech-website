@@ -4,6 +4,7 @@ import * as Accordion from "@radix-ui/react-accordion";
 import * as Tabs from "@radix-ui/react-tabs";
 import { ChevronDown } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
+import { trackEvent } from "@/lib/analytics";
 import { FAQ, FAQ_CATEGORIES } from "@/lib/data";
 
 /** 3.14 — FAQ with category tabs + single-open animated accordion. */
@@ -21,9 +22,15 @@ export default function Faq() {
           </p>
         </Reveal>
 
-        <Tabs.Root defaultValue="General">
+        <Tabs.Root
+          defaultValue="General"
+          onValueChange={(category) => trackEvent({ name: "faq_tab", props: { category } })}
+        >
           <Reveal>
-            <Tabs.List className="mt-12 flex flex-wrap justify-center gap-2.5" aria-label="FAQ categories">
+            <Tabs.List
+              className="mt-12 flex flex-wrap justify-center gap-2.5"
+              aria-label="FAQ categories"
+            >
               {FAQ_CATEGORIES.map((cat) => (
                 <Tabs.Trigger key={cat} value={cat} className="pill-tab">
                   {cat}

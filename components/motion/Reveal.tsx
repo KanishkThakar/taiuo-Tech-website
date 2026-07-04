@@ -3,6 +3,7 @@
 import { type ReactNode, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { REVEAL } from "@/components/motion/spec";
 
 interface RevealProps {
   children: ReactNode;
@@ -13,13 +14,13 @@ interface RevealProps {
   y?: number;
 }
 
-/** GSAP ScrollTrigger fade-up reveal (once), per master-prompt Section 1E. */
+/** GSAP ScrollTrigger fade-up reveal (once), per motion spec §11. */
 export default function Reveal({
   children,
   className,
   stagger = false,
   delay = 0,
-  y = 36,
+  y = REVEAL.y,
 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -34,16 +35,16 @@ export default function Reveal({
 
     const st = ScrollTrigger.create({
       trigger: el,
-      start: "top 86%",
+      start: REVEAL.start,
       once: true,
       onEnter: () =>
         gsap.to(targets, {
           opacity: 1,
           y: 0,
-          duration: 0.65,
+          duration: REVEAL.duration,
           delay,
-          ease: "power3.out",
-          stagger: stagger ? 0.1 : 0,
+          ease: REVEAL.ease,
+          stagger: stagger ? REVEAL.stagger : 0,
           overwrite: true,
         }),
     });

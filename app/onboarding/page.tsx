@@ -5,7 +5,13 @@ import Link from "next/link";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Camera, Check, ChevronLeft, X } from "lucide-react";
-import { Field, ProductShell, SupabaseGate, btnPrimary, inputCls } from "@/components/product/shell";
+import {
+  Field,
+  ProductShell,
+  SupabaseGate,
+  btnPrimary,
+  inputCls,
+} from "@/components/product/shell";
 import { GOAL_OPTIONS, PHOTO_SLOTS } from "@/lib/data";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 
@@ -20,7 +26,8 @@ const stepVariants = {
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [checking, setChecking] = useState(true);
+  // starts "checking" only when a backend exists to check against
+  const [checking, setChecking] = useState<boolean>(() => isSupabaseConfigured());
   const [userId, setUserId] = useState<string | null>(null);
 
   const [step, setStep] = useState(1);
@@ -37,10 +44,7 @@ export default function OnboardingPage() {
 
   /* auth gate */
   useEffect(() => {
-    if (!isSupabaseConfigured()) {
-      setChecking(false);
-      return;
-    }
+    if (!isSupabaseConfigured()) return;
     getSupabase()
       .auth.getSession()
       .then(({ data }) => {
@@ -155,18 +159,34 @@ export default function OnboardingPage() {
 
         <AnimatePresence mode="wait">
           {step === 1 && (
-            <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }}>
+            <motion.div
+              key="s1"
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+            >
               <h1 className="text-2xl font-medium">Tell us about you</h1>
               <p className="mt-1.5 text-[15px] text-body">
                 This calibrates your analysis to your demographics and goals.
               </p>
               <div className="mt-7 grid gap-4">
                 <Field label="Full name">
-                  <input value={fullName} onChange={(e) => setFullName(e.target.value)} className={inputCls} placeholder="Your name" />
+                  <input
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className={inputCls}
+                    placeholder="Your name"
+                  />
                 </Field>
                 <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
                   <Field label="Birth year">
-                    <select value={birthYear} onChange={(e) => setBirthYear(e.target.value)} className={inputCls}>
+                    <select
+                      value={birthYear}
+                      onChange={(e) => setBirthYear(e.target.value)}
+                      className={inputCls}
+                    >
                       <option value="">Select…</option>
                       {YEARS.map((y) => (
                         <option key={y} value={y}>
@@ -212,7 +232,14 @@ export default function OnboardingPage() {
           )}
 
           {step === 2 && (
-            <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }}>
+            <motion.div
+              key="s2"
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+            >
               <h1 className="text-2xl font-medium">Upload your 6 photos</h1>
               <p className="mt-1.5 text-[15px] text-body">
                 Clear, even lighting, no makeup or glasses. Your photos stay private — only our
@@ -228,13 +255,19 @@ export default function OnboardingPage() {
                         type="button"
                         onClick={() => pickFile(slot.key)}
                         className={`relative block aspect-[3/4] w-full overflow-hidden rounded-2xl border transition-colors ${
-                          preview ? "border-sage-mid" : "border-dashed border-line bg-cream hover:border-sage-mid"
+                          preview
+                            ? "border-sage-mid"
+                            : "border-dashed border-line bg-cream hover:border-sage-mid"
                         }`}
                         aria-label={`Upload ${slot.label} photo`}
                       >
                         {preview ? (
                           /* eslint-disable-next-line @next/next/no-img-element */
-                          <img src={preview} alt={`${slot.label} preview`} className="absolute inset-0 h-full w-full object-cover" />
+                          <img
+                            src={preview}
+                            alt={`${slot.label} preview`}
+                            className="absolute inset-0 h-full w-full object-cover"
+                          />
                         ) : (
                           <span className="absolute inset-0 grid place-items-center">
                             <Camera className="h-6 w-6 text-faint" strokeWidth={1.5} />
@@ -275,7 +308,11 @@ export default function OnboardingPage() {
                 <button className="btn btn-glass !bg-cream flex-none" onClick={() => setStep(1)}>
                   <ChevronLeft className="mr-1 h-4 w-4" /> Back
                 </button>
-                <button className={btnPrimary} disabled={!photosComplete} onClick={() => setStep(3)}>
+                <button
+                  className={btnPrimary}
+                  disabled={!photosComplete}
+                  onClick={() => setStep(3)}
+                >
                   {photosComplete
                     ? "Continue"
                     : `${PHOTO_SLOTS.filter((s) => files[s.key]).length}/6 photos added`}
@@ -285,7 +322,14 @@ export default function OnboardingPage() {
           )}
 
           {step === 3 && (
-            <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }}>
+            <motion.div
+              key="s3"
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+            >
               <h1 className="text-2xl font-medium">Review &amp; submit</h1>
               <p className="mt-1.5 text-[15px] text-body">One last look before we begin.</p>
 
@@ -295,12 +339,18 @@ export default function OnboardingPage() {
                 </p>
                 <p className="mt-1.5 text-body">Goals: {goals.join(", ")}</p>
                 <div className="mt-4 flex gap-2">
-                  {PHOTO_SLOTS.map((s) =>
-                    previews[s.key] ? (
+                  {PHOTO_SLOTS.map((s) => {
+                    const src = previews[s.key];
+                    return src ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
-                      <img key={s.key} src={previews[s.key]} alt={s.label} className="h-14 w-11 rounded-lg object-cover" />
-                    ) : null,
-                  )}
+                      <img
+                        key={s.key}
+                        src={src}
+                        alt={s.label}
+                        className="h-14 w-11 rounded-lg object-cover"
+                      />
+                    ) : null;
+                  })}
                 </div>
               </div>
 
@@ -316,13 +366,20 @@ export default function OnboardingPage() {
               </label>
 
               {error && (
-                <p role="alert" className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
+                <p
+                  role="alert"
+                  className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600"
+                >
                   {error}
                 </p>
               )}
 
               <div className="mt-6 flex gap-3">
-                <button className="btn btn-glass !bg-cream flex-none" onClick={() => setStep(2)} disabled={busy}>
+                <button
+                  className="btn btn-glass !bg-cream flex-none"
+                  onClick={() => setStep(2)}
+                  disabled={busy}
+                >
                   <ChevronLeft className="mr-1 h-4 w-4" /> Back
                 </button>
                 <button className={btnPrimary} disabled={!consent || busy} onClick={submit}>
@@ -333,11 +390,21 @@ export default function OnboardingPage() {
           )}
 
           {step === 4 && (
-            <motion.div key="s4" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="py-4 text-center">
+            <motion.div
+              key="s4"
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+              className="py-4 text-center"
+            >
               <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-sage-base/25">
                 <Check className="h-8 w-8 text-[#4E5F5F]" strokeWidth={2} />
               </span>
-              <h1 className="mt-6 text-2xl font-medium">You&apos;re all set{fullName ? `, ${fullName.split(" ")[0]}` : ""}!</h1>
+              <h1 className="mt-6 text-2xl font-medium">
+                You&apos;re all set{fullName ? `, ${fullName.split(" ")[0]}` : ""}!
+              </h1>
               <p className="mx-auto mt-3 max-w-md text-[15px] text-body">
                 Your photos are uploaded and your analysis is in preparation. It takes up to 28 days
                 for our team to prepare your personalized protocol — we&apos;ll keep your dashboard

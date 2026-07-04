@@ -7,9 +7,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
-import { FACTORS } from "@/lib/data";
+import { FACTORS, type FactorIconKey } from "@/lib/data";
 
-const ICONS: Record<string, LucideIcon> = {
+const ICONS: Record<FactorIconKey, LucideIcon> = {
   globe: Globe,
   sliders: SlidersHorizontal,
   activity: Activity,

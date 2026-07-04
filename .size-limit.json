@@ -1,0 +1,12 @@
+[
+  {
+    "name": "All route JS, gzipped (every chunk Next can ship)",
+    "path": ".next/static/chunks/**/*.js",
+    "limit": "500 kB"
+  },
+  {
+    "name": "CSS, gzipped",
+    "path": ".next/static/**/*.css",
+    "limit": "40 kB"
+  }
+]

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Reveal from "@/components/motion/Reveal";
+import TrackedLink from "@/components/motion/TrackedLink";
 
 /** 3.11 — CTA banner on the sage gradient. */
 export default function CtaBand() {
@@ -19,9 +19,13 @@ export default function CtaBand() {
           for your unique facial structure.
         </p>
         <div className="mt-10">
-          <Link href="/onboarding" className="btn btn-dark px-10 py-[17px] text-[17px] hover:scale-[1.03]">
+          <TrackedLink
+            href="/onboarding"
+            event={{ name: "cta_click", props: { location: "cta_band" } }}
+            className="btn btn-dark px-10 py-[17px] text-[17px] hover:scale-[1.03]"
+          >
             Start my plan
-          </Link>
+          </TrackedLink>
         </div>
       </Reveal>
     </section>

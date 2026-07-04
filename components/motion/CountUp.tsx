@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { formatCountFrame, parseCountValue } from "@/lib/count-format";
+import { COUNT_UP_MS } from "@/components/motion/spec";
 
 /**
  * Animates the LAST number inside `value` from 0 to its target on first
@@ -11,7 +13,7 @@ import { useEffect, useRef } from "react";
 export default function CountUp({
   value,
   className,
-  duration = 1100,
+  duration = COUNT_UP_MS,
 }: {
   value: string;
   className?: string;
@@ -27,17 +29,11 @@ export default function CountUp({
       return;
     }
 
-    const m = value.match(/([\d,]+(?:\.\d+)?)(?!.*\d)/);
-    if (!m || m.index === undefined) {
+    const spec = parseCountValue(value);
+    if (!spec) {
       el.textContent = value;
       return;
     }
-    const numStr = m[1];
-    const target = parseFloat(numStr.replace(/,/g, ""));
-    const decimals = (numStr.split(".")[1] || "").length;
-    const useComma = numStr.includes(",");
-    const prefix = value.slice(0, m.index);
-    const suffix = value.slice(m.index + numStr.length);
 
     let frameId = 0;
     const run = () => {
@@ -45,11 +41,7 @@ export default function CountUp({
       const frame = (t: number) => {
         const p = Math.min((t - t0) / duration, 1);
         const eased = 1 - Math.pow(1 - p, 3);
-        let v = (target * eased).toFixed(decimals);
-        if (useComma) {
-          v = Number(v).toLocaleString("en-US", { minimumFractionDigits: decimals });
-        }
-        el.textContent = prefix + v + suffix;
+        el.textContent = formatCountFrame(spec, eased);
         if (p < 1) frameId = requestAnimationFrame(frame);
         else el.textContent = value;
       };

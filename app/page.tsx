@@ -26,8 +26,12 @@ const jsonLd = {
       "@type": "Organization",
       name: "Taiuo Tech",
       email: "hello@taiuo.tech",
-      description:
-        "AI-powered facial analysis and non-surgical transformation plans.",
+      description: "AI-powered facial analysis and non-surgical transformation plans.",
+    },
+    {
+      "@type": "WebSite",
+      name: "Taiuo Tech",
+      url: "https://taiuo-tech-website.vercel.app",
     },
     {
       "@type": "FAQPage",

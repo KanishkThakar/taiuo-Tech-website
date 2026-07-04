@@ -16,7 +16,11 @@ function WaySteps({ steps, light }: { steps: WayStep[]; light?: boolean }) {
           key={s.text}
           className="text-center max-md:grid max-md:grid-cols-[10px_1fr] max-md:items-center max-md:gap-x-[18px] max-md:py-2.5 max-md:text-left"
         >
-          <span className="way-step-label mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.08em] opacity-60 max-md:col-start-2 max-md:row-start-1 max-md:mb-0.5">
+          <span
+            className={`way-step-label mb-2.5 block text-[10px] font-semibold uppercase tracking-[0.08em] max-md:col-start-2 max-md:row-start-1 max-md:mb-0.5 ${
+              light ? "text-white/70" : "text-faint"
+            }`}
+          >
             {s.label}
           </span>
           <span className="way-dot max-md:col-start-1 max-md:row-span-2 max-md:row-start-1 max-md:m-0" />
@@ -69,7 +73,10 @@ export default function NewWay() {
           </p>
         </Reveal>
 
-        <div ref={oldRef} className="way-card way-old rounded-2xl bg-cream p-[32px_36px] text-body max-md:p-[26px_22px]">
+        <div
+          ref={oldRef}
+          className="way-card way-old rounded-2xl bg-cream p-[32px_36px] text-body max-md:p-[26px_22px]"
+        >
           <div className="mb-[30px] flex items-center gap-3 text-[17px] font-medium text-ink">
             <Clock className="h-[22px] w-[22px] text-faint" strokeWidth={1.5} aria-hidden="true" />
             <span>The old way</span>
@@ -77,9 +84,16 @@ export default function NewWay() {
           <WaySteps steps={OLD_WAY} />
         </div>
 
-        <div ref={newRef} className="way-card way-new mt-[22px] rounded-2xl bg-ink p-[32px_36px] text-white max-md:p-[26px_22px]">
+        <div
+          ref={newRef}
+          className="way-card way-new mt-[22px] rounded-2xl bg-ink p-[32px_36px] text-white max-md:p-[26px_22px]"
+        >
           <div className="mb-[30px] flex items-center gap-3 text-[17px] font-medium">
-            <Sparkles className="h-[22px] w-[22px] text-sage-light" strokeWidth={1.5} aria-hidden="true" />
+            <Sparkles
+              className="h-[22px] w-[22px] text-sage-light"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
             <span>The new way</span>
           </div>
           <WaySteps steps={NEW_WAY} light />

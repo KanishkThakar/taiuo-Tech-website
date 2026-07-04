@@ -1,29 +1,54 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { motion, type Variants } from "motion/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import MagneticButton from "@/components/motion/MagneticButton";
+import { EASE_SMOOTH, HERO_BEATS } from "@/components/motion/spec";
+import { trackEvent } from "@/lib/analytics";
 import { HERO } from "@/lib/data";
-
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
   show: (delay: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay, duration: 0.6, ease: EASE },
+    transition: { delay, duration: 0.6, ease: EASE_SMOOTH },
   }),
 };
+
+/** Apple-style masked line reveal: text rises out of an overflow clip. */
+function MaskedLine({
+  children,
+  delay,
+  className,
+}: {
+  children: string;
+  delay: number;
+  className?: string;
+}) {
+  return (
+    <span className="block overflow-hidden">
+      <motion.span
+        initial={{ y: "110%" }}
+        animate={{ y: 0 }}
+        transition={{ delay, duration: 0.7, ease: EASE_SMOOTH }}
+        className={`block ${className ?? ""}`}
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+}
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
 
-  /* GSAP scrubbed parallax on the portrait (Section 1E) */
+  /* GSAP scrubbed parallax on the portrait (motion spec §11) */
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     gsap.registerPlugin(ScrollTrigger);
@@ -52,7 +77,10 @@ export default function Hero() {
       }}
     >
       {/* ambient orbs */}
-      <div className="hero-orb right-[-8%] top-[-15%] h-[600px] w-[600px] bg-white/20" aria-hidden="true" />
+      <div
+        className="hero-orb right-[-8%] top-[-15%] h-[600px] w-[600px] bg-white/20"
+        aria-hidden="true"
+      />
       <div
         className="hero-orb bottom-[-12%] left-[-6%] h-[420px] w-[420px] bg-[#9DADAD]/50 [animation-direction:reverse] [animation-duration:15s]"
         aria-hidden="true"
@@ -62,7 +90,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, x: 60 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.2, duration: 0.8, ease: EASE }}
+        transition={{ delay: HERO_BEATS.visual, duration: 0.8, ease: EASE_SMOOTH }}
         className="absolute inset-y-0 right-0 w-[46%] max-lg:w-[52%] max-[900px]:hidden"
       >
         <div
@@ -85,32 +113,24 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={0.35}
+          custom={HERO_BEATS.label}
           className="caption-label mb-6 text-ink/60"
         >
           {HERO.label}
         </motion.p>
 
         <h1 className="h1-display">
-          <motion.span variants={fadeUp} initial="hidden" animate="show" custom={0.5} className="block">
-            {HERO.h1Line1}
-          </motion.span>
-          <motion.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={0.65}
-            className="block font-light text-white/85"
-          >
+          <MaskedLine delay={HERO_BEATS.h1Line1}>{HERO.h1Line1}</MaskedLine>
+          <MaskedLine delay={HERO_BEATS.h1Line2} className="font-light text-white/85">
             {HERO.h1Line2}
-          </motion.span>
+          </MaskedLine>
         </h1>
 
         <motion.p
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={0.8}
+          custom={HERO_BEATS.subtitle}
           className="mt-6 max-w-[440px] text-lg text-ink/70 max-[900px]:mx-auto"
         >
           {HERO.subtitle}
@@ -120,12 +140,18 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={0.95}
-          className="mt-10 flex flex-wrap gap-4 max-[900px]:justify-center max-sm:[&>a]:flex-[1_1_100%]"
+          custom={HERO_BEATS.ctas}
+          className="mt-10 flex flex-wrap gap-4 max-[900px]:justify-center max-sm:[&>*]:flex-[1_1_100%]"
         >
-          <Link href="/onboarding" className="btn btn-white">
-            Start my plan
-          </Link>
+          <MagneticButton>
+            <Link
+              href="/onboarding"
+              className="btn btn-white w-full"
+              onClick={() => trackEvent({ name: "cta_click", props: { location: "hero" } })}
+            >
+              Start my plan
+            </Link>
+          </MagneticButton>
           <a href="#how" className="btn btn-glass">
             How it works
           </a>
@@ -135,7 +161,7 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={1.15}
+          custom={HERO_BEATS.badges}
           className="mt-[72px] flex max-w-[640px] max-[900px]:mx-auto max-[900px]:justify-center max-sm:mt-14 max-sm:flex-col max-sm:items-center max-sm:gap-4"
         >
           {HERO.badges.map((b, i) => (

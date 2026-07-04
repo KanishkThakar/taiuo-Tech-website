@@ -2,7 +2,7 @@ import { BadgeCheck, BookOpenCheck, Stethoscope, type LucideIcon } from "lucide-
 import Reveal from "@/components/motion/Reveal";
 import { DERM_POINTS } from "@/lib/data";
 
-const ICONS: Record<string, LucideIcon> = {
+const ICONS: Record<(typeof DERM_POINTS)[number]["icon"], LucideIcon> = {
   stethoscope: Stethoscope,
   badge: BadgeCheck,
   book: BookOpenCheck,

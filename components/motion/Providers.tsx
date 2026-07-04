@@ -25,6 +25,9 @@ export default function Providers({ children }: { children: ReactNode }) {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // recalc trigger positions once the webfont has settled (layout shifts)
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
+
     // smooth-scroll in-page anchors through Lenis, offset for the fixed nav
     const onClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');

@@ -44,7 +44,11 @@ export default function Consider() {
                   key={c}
                   className="flex items-center gap-3.5 border-b border-white/10 py-[13px] text-[15.5px] text-white last:border-b-0"
                 >
-                  <Check className="h-5 w-5 flex-none text-green-400" strokeWidth={2} aria-hidden="true" />
+                  <Check
+                    className="h-5 w-5 flex-none text-green-400"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
                   {c}
                 </li>
               ))}

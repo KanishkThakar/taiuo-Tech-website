@@ -11,10 +11,10 @@
   --color-sage-mid: #9dadad;
   --color-sage-light: #c8d4d4;
 
-  /* neutrals */
+  /* neutrals — faint is tuned to hold WCAG AA (≥4.5:1) for small text on white */
   --color-ink: #1a1a1a;
   --color-body: #6b7280;
-  --color-faint: #9ca3af;
+  --color-faint: #6a737e;
   --color-line: #e5e7eb;
   --color-cream: #fafafa;
 
@@ -92,7 +92,8 @@
   }
   .h-light {
     font-weight: 300;
-    color: var(--color-faint);
+    /* large-text tone: lightest gray that still meets 3:1 on white/cream */
+    color: #848d9a;
   }
 
   .badge-pill {
@@ -101,7 +102,7 @@
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-body);
+    color: #5b6270; /* ≥4.5:1 on the pill gray */
     background: #f0f1f2;
     padding: 6px 14px;
     border-radius: 9999px;
@@ -167,7 +168,7 @@
     font-size: 14px;
     font-weight: 500;
     background: #efefef;
-    color: var(--color-body);
+    color: #5b6472; /* ≥4.5:1 on the pill gray */
     transition:
       background 0.15s,
       color 0.15s;
@@ -218,12 +219,12 @@
 .pm {
   white-space: nowrap;
   color: var(--color-ink);
-  opacity: 0.45;
+  opacity: 0.62; /* muted but still ≥4.5:1 on white */
   transition: opacity 0.2s;
   font-size: 15px;
 }
 .pm:hover {
-  opacity: 0.85;
+  opacity: 0.95;
 }
 .pm-usatoday {
   font-weight: 700;

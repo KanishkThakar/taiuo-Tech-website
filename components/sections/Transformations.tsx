@@ -34,10 +34,22 @@ export default function Transformations() {
             <BeforeAfterSlider
               ariaLabel="Before and after comparison 1"
               before={
-                <Image src="/images/transform-before-1.jpg" alt="Before transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+                <Image
+                  src="/images/transform-before-1.jpg"
+                  alt="Before transformation"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 300px"
+                  className="object-cover"
+                />
               }
               after={
-                <Image src="/images/transform-after-1.jpg" alt="After transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+                <Image
+                  src="/images/transform-after-1.jpg"
+                  alt="After transformation"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 300px"
+                  className="object-cover"
+                />
               }
             />
           </Reveal>
@@ -45,10 +57,22 @@ export default function Transformations() {
             <BeforeAfterSlider
               ariaLabel="Before and after comparison 2"
               before={
-                <Image src="/images/transform-before-2.jpg" alt="Before transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+                <Image
+                  src="/images/transform-before-2.jpg"
+                  alt="Before transformation"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 300px"
+                  className="object-cover"
+                />
               }
               after={
-                <Image src="/images/transform-after-2.jpg" alt="After transformation" fill sizes="(max-width: 640px) 100vw, 300px" className="object-cover" />
+                <Image
+                  src="/images/transform-after-2.jpg"
+                  alt="After transformation"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 300px"
+                  className="object-cover"
+                />
               }
             />
           </Reveal>

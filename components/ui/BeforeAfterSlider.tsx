@@ -3,6 +3,7 @@
 import { type CSSProperties, type ReactNode, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { clampPercent } from "@/lib/count-format";
 
 /**
  * Draggable before/after comparison (pointer + touch + keyboard).
@@ -34,7 +35,7 @@ export default function BeforeAfterSlider({
 
     const fromEvent = (e: PointerEvent) => {
       const rect = card.getBoundingClientRect();
-      posRef.current = Math.min(100, Math.max(0, ((e.clientX - rect.left) / rect.width) * 100));
+      posRef.current = clampPercent(((e.clientX - rect.left) / rect.width) * 100);
       apply();
     };
 
@@ -51,12 +52,12 @@ export default function BeforeAfterSlider({
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
-        posRef.current = Math.max(0, posRef.current - 5);
+        posRef.current = clampPercent(posRef.current - 5);
         apply();
         e.preventDefault();
       }
       if (e.key === "ArrowRight") {
-        posRef.current = Math.min(100, posRef.current + 5);
+        posRef.current = clampPercent(posRef.current + 5);
         apply();
         e.preventDefault();
       }
@@ -124,7 +125,10 @@ export default function BeforeAfterSlider({
       {/* before (base layer) */}
       <div className="absolute inset-0">{before}</div>
       {/* after, clipped from the divider rightwards */}
-      <div className="pointer-events-none absolute inset-0" style={{ clipPath: "inset(0 0 0 var(--pos))" }}>
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ clipPath: "inset(0 0 0 var(--pos))" }}
+      >
         {after}
       </div>
       {/* divider + handle */}
@@ -133,7 +137,16 @@ export default function BeforeAfterSlider({
         style={{ left: "var(--pos)" }}
       >
         <div className="absolute left-1/2 top-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white text-ink shadow-deep">
-          <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-[18px] w-[18px]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
             <path d="m9 6-6 6 6 6" />
             <path d="m15 6 6 6-6 6" />
           </svg>

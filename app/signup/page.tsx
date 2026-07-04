@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
-import { Field, ProductShell, SupabaseGate, btnPrimary, inputCls } from "@/components/product/shell";
+import {
+  Field,
+  ProductShell,
+  SupabaseGate,
+  btnPrimary,
+  inputCls,
+} from "@/components/product/shell";
 import { getSupabase } from "@/lib/supabase";
 
 export default function SignupPage() {
