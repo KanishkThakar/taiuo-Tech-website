@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Taiuo Tech — Website
 
-## Getting Started
+**"Improve your looks without surgery."** AI-powered facial analysis & aesthetics platform — Phase 1 marketing website, built from `taiuo_tech_fable5_prompt_v3.md` (the master prompt with the full design system, copy, and phased roadmap).
 
-First, run the development server:
+## Stack
+
+- **Next.js (App Router) + React 19 + TypeScript (strict)** — statically generated
+- **Tailwind CSS v4** — design tokens in `app/globals.css` (`@theme`): sage palette, ink, Inter
+- **GSAP + ScrollTrigger** — scroll reveals, timeline line-draws, hero parallax
+- **Lenis** — smooth scroll · **Motion** — hero entrance, tab crossfades, mobile menu
+- **Radix UI** — accessible tabs + accordion · **lucide-react** — icons
+- **Supabase** — client ready in `lib/supabase.ts` (used from Phase 2 onward)
+- **pnpm** — package manager
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm build      # production build (SSG)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+app/                 layout (fonts, metadata), page (17-section homepage), globals.css (tokens)
+components/sections/ one component per page block (3.1–3.17 of the master prompt)
+components/visuals/  React SVG visuals (face-scan hero, before/after faces, scenes, thumbs)
+components/motion/   LenisProvider, GSAP Reveal, CountUp
+lib/data.ts          all page copy as typed data
+lib/supabase.ts      Supabase client factory (env-driven)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment (Supabase)
 
-## Learn More
+Copy `.env.example` → `.env.local` and fill from Supabase Dashboard → Project Settings → API:
 
-To learn more about Next.js, take a look at the following resources:
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy (Vercel)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. vercel.com → **Add New → Project** → import `KanishkThakar/taiuo-Tech-website`
+2. Framework preset: Next.js (auto-detected). No extra config needed.
+3. For Supabase: Vercel → project → **Integrations → Supabase** — links the Supabase project and sets the env vars automatically on every deploy.
 
-## Deploy on Vercel
+## Roadmap
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Phase 1 (this repo): marketing website — done.
+Phase 2: product web app (auth → 6-photo upload → analysis → dashboard → report → protocol → progress → messaging → billing).
+Phase 3: mobile app (React Native + Expo).
+See Section 9 of the master prompt — one phase ships fully before the next starts.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Content honesty rules
+
+Endorsements, testimonials, and press logos are rendered as explicit placeholders until real, consented ones exist. Keep it that way (Section 3 + note in `lib/data.ts`).
