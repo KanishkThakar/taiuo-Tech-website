@@ -45,22 +45,28 @@ export default function Faq() {
                 type="single"
                 collapsible
                 defaultValue="item-0"
-                className="mx-auto mt-9 max-w-[768px]"
+                className="mx-auto mt-9 flex max-w-[768px] flex-col gap-3"
               >
                 {FAQ.filter((f) => f.cat === cat).map((f, i) => (
-                  <Accordion.Item key={f.q} value={`item-${i}`} className="border-b border-line">
+                  <Accordion.Item
+                    key={f.q}
+                    value={`item-${i}`}
+                    className="card overflow-hidden transition-[border-color,box-shadow] duration-300 ease-smooth data-[state=closed]:hover:border-sage-base/30 data-[state=open]:border-sage-base/40 data-[state=open]:shadow-card"
+                  >
                     <Accordion.Header>
-                      <Accordion.Trigger className="flex w-full items-center justify-between gap-4 py-[22px] text-left text-[1.06rem] font-medium">
+                      <Accordion.Trigger className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-[1.06rem] font-medium">
                         <span>{f.q}</span>
-                        <ChevronDown
-                          className="accordion-chevron h-5 w-5 flex-none text-body"
-                          strokeWidth={2}
-                          aria-hidden="true"
-                        />
+                        <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-cream text-body transition-colors duration-300 group-data-[state=open]:bg-ink group-data-[state=open]:text-white">
+                          <ChevronDown
+                            className="accordion-chevron h-4 w-4"
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          />
+                        </span>
                       </Accordion.Trigger>
                     </Accordion.Header>
                     <Accordion.Content className="accordion-content">
-                      <p className="pb-6 text-[15.5px] text-body">{f.a}</p>
+                      <p className="px-6 pb-5 text-[15.5px] leading-relaxed text-body">{f.a}</p>
                     </Accordion.Content>
                   </Accordion.Item>
                 ))}
