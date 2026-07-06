@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { ChevronDown, PlayCircle } from "lucide-react";
 import MagneticButton from "@/components/motion/MagneticButton";
 import { trackEvent } from "@/lib/analytics";
 import { HERO } from "@/lib/data";
@@ -17,11 +18,9 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
 
-  /* portrait parallax — a 6-line rAF scroll handler, no library */
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!window.matchMedia("(min-width: 900px)").matches) return;
-
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
@@ -41,23 +40,25 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-svh items-center overflow-hidden pt-[72px] max-md:pt-16"
+      className="relative flex min-h-svh items-center overflow-hidden pt-[76px] max-md:pt-16"
       style={{
         background: "linear-gradient(135deg, #A8B5B5 0%, #B8C5C5 50%, #C8D4D4 100%)",
       }}
     >
-      {/* ambient orbs */}
+      {/* depth layers */}
+      <div className="hero-radiance pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
+      <div className="hero-grain pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
       <div
-        className="hero-orb hero-orb-white right-[-8%] top-[-15%] h-[600px] w-[600px]"
+        className="hero-orb hero-orb-white right-[-8%] top-[-15%] z-0 h-[600px] w-[600px]"
         aria-hidden="true"
       />
       <div
-        className="hero-orb hero-orb-sage bottom-[-12%] left-[-6%] h-[420px] w-[420px] [animation-direction:reverse] [animation-duration:15s]"
+        className="hero-orb hero-orb-sage bottom-[-12%] left-[-6%] z-0 h-[420px] w-[420px] [animation-direction:reverse] [animation-duration:15s]"
         aria-hidden="true"
       />
 
-      {/* portrait — desktop only; CSS entrance, GSAP parallax post-paint */}
-      <div className="hp-enter absolute inset-y-0 right-0 w-[46%] max-lg:w-[52%] max-[900px]:hidden">
+      {/* portrait — desktop only; CSS entrance, rAF parallax post-paint */}
+      <div className="hp-enter absolute inset-y-0 right-0 z-[1] w-[46%] max-lg:w-[52%] max-[900px]:hidden">
         <div
           ref={parallaxRef}
           className="relative h-full w-full [mask-image:linear-gradient(to_right,transparent_0%,#000_22%)]"
@@ -74,7 +75,15 @@ export default function Hero() {
       </div>
 
       <div className="container-x relative z-[2] w-full py-16 max-[900px]:text-center">
-        <p className="ha ha-label caption-label mb-6 text-ink/60">{HERO.label}</p>
+        {/* premium eyebrow chip */}
+        <div className="ha ha-label mb-7 inline-flex items-center gap-2.5 rounded-full border border-white/50 bg-white/40 py-1.5 pl-1.5 pr-4 text-[13px] font-medium text-ink/75 shadow-soft backdrop-blur-sm max-[900px]:mx-auto">
+          <span className="flex -space-x-2" aria-hidden="true">
+            <span className="h-5 w-5 rounded-full bg-gradient-to-br from-[#dbe4e4] to-[#9dadad] ring-2 ring-white" />
+            <span className="h-5 w-5 rounded-full bg-gradient-to-br from-[#c8d4d4] to-[#8b9a9a] ring-2 ring-white" />
+            <span className="h-5 w-5 rounded-full bg-gradient-to-br from-[#b8c5c5] to-[#7d8c8c] ring-2 ring-white" />
+          </span>
+          {HERO.label}
+        </div>
 
         <h1 className="h1-display">
           <span className="hl-mask">
@@ -85,11 +94,11 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p className="ha ha-sub mt-6 max-w-[440px] text-lg text-ink/70 max-[900px]:mx-auto">
+        <p className="ha ha-sub mt-6 max-w-[452px] text-lg leading-relaxed text-ink/70 max-[900px]:mx-auto">
           {HERO.subtitle}
         </p>
 
-        <div className="ha ha-ctas mt-10 flex flex-wrap gap-4 max-[900px]:justify-center max-sm:[&>*]:flex-[1_1_100%]">
+        <div className="ha ha-ctas mt-10 flex flex-wrap gap-3.5 max-[900px]:justify-center max-sm:[&>*]:flex-[1_1_100%]">
           <MagneticButton>
             <Link
               href="/onboarding"
@@ -99,23 +108,39 @@ export default function Hero() {
               Start my plan
             </Link>
           </MagneticButton>
-          <a href="#how" className="btn btn-glass">
+          <a href="#how" className="btn btn-glass group gap-2">
+            <PlayCircle className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
             How it works
           </a>
         </div>
 
-        <div className="ha ha-badges mt-[72px] flex max-w-[640px] max-[900px]:mx-auto max-[900px]:justify-center max-sm:mt-14 max-sm:flex-col max-sm:items-center max-sm:gap-4">
+        <div className="ha ha-badges mt-[72px] flex max-w-[640px] max-[900px]:mx-auto max-[900px]:justify-center max-sm:mt-14 max-sm:flex-col max-sm:items-center max-sm:gap-5">
           {HERO.badges.map((b, i) => (
             <div
               key={b.title}
               className={`pr-7 max-sm:border-0 max-sm:p-0 ${i > 0 ? "border-l border-ink/15 pl-7" : ""}`}
             >
-              <p className="text-sm font-medium">{b.title}</p>
-              <p className="mt-0.5 text-[12.5px] text-ink/55">{b.sub}</p>
+              <p className="flex items-center gap-2 text-sm font-medium max-[900px]:justify-center">
+                <span
+                  className="h-1.5 w-1.5 rounded-full bg-sage-mid"
+                  aria-hidden="true"
+                />
+                {b.title}
+              </p>
+              <p className="mt-1 text-[12.5px] text-ink/55">{b.sub}</p>
             </div>
           ))}
         </div>
       </div>
+
+      {/* scroll cue */}
+      <a
+        href="#transform"
+        aria-label="Scroll to explore"
+        className="scroll-cue absolute bottom-7 left-1/2 z-[2] -translate-x-1/2 text-ink/45 transition-colors hover:text-ink/70 max-md:hidden"
+      >
+        <ChevronDown className="h-6 w-6" strokeWidth={1.5} aria-hidden="true" />
+      </a>
     </section>
   );
 }
