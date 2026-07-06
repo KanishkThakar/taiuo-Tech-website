@@ -10,6 +10,7 @@ import {
   btnPrimary,
   inputCls,
 } from "@/components/product/shell";
+import { AuthDivider, OAuthButtons } from "@/components/product/oauth";
 import { getSupabase } from "@/lib/supabase";
 
 export default function LoginPage() {
@@ -30,9 +31,7 @@ export default function LoginPage() {
         setError(signInError.message);
         return;
       }
-      // route to dashboard if they already submitted an analysis, else onboarding
-      const { data: requests } = await supabase.from("analysis_requests").select("id").limit(1);
-      router.replace(requests && requests.length > 0 ? "/dashboard" : "/onboarding");
+      router.replace("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -46,7 +45,12 @@ export default function LoginPage() {
         <h1 className="text-2xl font-medium">Welcome back</h1>
         <p className="mt-1.5 text-[15px] text-body">Log in to view your plan and analysis.</p>
 
-        <form onSubmit={onSubmit} className="mt-7 grid gap-4">
+        <div className="mt-7">
+          <OAuthButtons onError={(m) => setError(m || null)} />
+        </div>
+        <AuthDivider />
+
+        <form onSubmit={onSubmit} className="grid gap-4">
           <Field label="Email">
             <input
               type="email"
@@ -58,7 +62,16 @@ export default function LoginPage() {
               placeholder="you@example.com"
             />
           </Field>
-          <Field label="Password">
+          <label className="block">
+            <span className="mb-1.5 flex items-center justify-between">
+              <span className="text-sm font-medium">Password</span>
+              <Link
+                href="/forgot-password"
+                className="text-[13px] font-medium text-body underline-offset-[3px] hover:text-ink hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </span>
             <input
               type="password"
               required
@@ -68,7 +81,7 @@ export default function LoginPage() {
               className={inputCls}
               placeholder="••••••••"
             />
-          </Field>
+          </label>
 
           {error && (
             <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">

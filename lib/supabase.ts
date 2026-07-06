@@ -28,6 +28,16 @@ export function getSupabase(): SupabaseClient {
     );
   }
 
-  client ??= createClient(url, anonKey);
+  client ??= createClient(url, anonKey, {
+    auth: {
+      // PKCE is the recommended browser flow: OAuth, email confirmation, and
+      // password recovery all return to /auth/callback with a `?code=`, which
+      // `detectSessionInUrl` exchanges automatically when that page loads.
+      flowType: "pkce",
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  });
   return client;
 }
