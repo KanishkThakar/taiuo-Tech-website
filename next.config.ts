@@ -11,7 +11,8 @@ const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://*.supabase.co",
+  "img-src 'self' data: blob: https://*.supabase.co https://lh3.googleusercontent.com https://*.githubusercontent.com",
+  "media-src 'self' blob:",
   "font-src 'self'",
   "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://vitals.vercel-insights.com",
   "object-src 'none'",
@@ -29,8 +30,9 @@ const SECURITY_HEADERS = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "X-Frame-Options", value: "DENY" },
   {
+    // camera=(self) enables the in-app AI face-scan (getUserMedia) on our own origin
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+    value: "camera=(self), microphone=(), geolocation=(), payment=(), usb=()",
   },
 ];
 
