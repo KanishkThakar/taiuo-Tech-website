@@ -496,6 +496,34 @@ main#top ~ footer {
   animation: mesh-pulse 5s ease-in-out infinite;
 }
 
+/* ── animated logo reveal (Logo.tsx AnimatedLogo / animated prop) ── */
+@keyframes logo-tile-in {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes logo-stroke-draw {
+  from {
+    stroke-dashoffset: 30;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.logo-animated .logo-tile {
+  transform-origin: center;
+  animation: logo-tile-in 0.5s var(--ease-smooth) both;
+}
+.logo-animated .logo-stroke {
+  stroke-dasharray: 30;
+  animation: logo-stroke-draw 0.75s var(--ease-smooth) 0.18s both;
+}
+
 /* ── reduced motion ───────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html {
