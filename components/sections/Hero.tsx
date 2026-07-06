@@ -11,7 +11,7 @@ import { HERO } from "@/lib/data";
  * The whole hero entrance is pure CSS (globals: .ha / .hl-line / .hp-enter)
  * so it starts at first paint with zero hydration dependency — desktop gets
  * the staged sequence, mobile paints instantly (LCP-first, v4 §10).
- * gsap is dynamic-imported post-paint purely for the portrait parallax.
+ * The portrait parallax is a lightweight post-paint rAF scroll handler.
  */
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);

@@ -5,13 +5,12 @@ import { MotionConfig } from "motion/react";
 
 /**
  * Site-wide motion foundation:
- * - Lenis buttered smooth scroll, synced to GSAP's ticker/ScrollTrigger
+ * - Lenis buttered smooth scroll
  * - Smooth anchor navigation with fixed-nav offset
  * - MotionConfig honours prefers-reduced-motion for all `motion` components
  *
- * gsap + lenis are dynamic-imported inside the effect so they evaluate
- * AFTER first paint — they were pushing FCP out by seconds on throttled
- * mobile CPUs (v4 §10).
+ * Lenis is dynamic-imported inside the effect so it evaluates AFTER first
+ * paint — it was pushing FCP out by seconds on throttled mobile CPUs (v4 §10).
  */
 export default function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
