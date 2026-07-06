@@ -1,32 +1,51 @@
 import Image from "next/image";
+import { BadgeCheck } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
 import { TESTIMONIAL } from "@/lib/data";
 
 /** 3.7 — centerpiece expert quote. */
 export default function Testimonial() {
   return (
-    <section className="border-y border-line bg-white py-[88px]" aria-label="Testimonial">
-      <Reveal stagger className="container-x flex max-w-[760px] flex-col items-center text-center">
+    <section
+      className="relative overflow-hidden border-y border-line bg-white py-24"
+      aria-label="Testimonial"
+    >
+      {/* soft sage radiance behind the quote */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[720px] max-w-[92vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(168_181_181/0.16),transparent)]"
+        aria-hidden="true"
+      />
+      <Reveal
+        stagger
+        className="container-x relative flex max-w-[780px] flex-col items-center text-center"
+      >
         <span
-          className="font-serif text-6xl leading-none text-sage-mid opacity-45"
+          className="select-none bg-gradient-to-br from-sage-mid to-sage-base bg-clip-text font-serif text-[80px] leading-[0.5] text-transparent opacity-70"
           aria-hidden="true"
         >
-          “
+          &ldquo;
         </span>
-        <blockquote className="mt-2">
-          <p className="text-[clamp(1.25rem,2.2vw,1.5rem)] font-normal leading-normal">
+        <blockquote className="mt-4">
+          <p className="text-[clamp(1.35rem,2.4vw,1.6rem)] font-normal leading-snug tracking-[-0.01em] text-ink">
             {TESTIMONIAL.quote}
           </p>
         </blockquote>
-        <Image
-          src={TESTIMONIAL.photo}
-          alt={TESTIMONIAL.name}
-          width={64}
-          height={64}
-          className="mt-8 h-16 w-16 rounded-full object-cover"
-        />
-        <p className="mt-3.5 font-semibold">{TESTIMONIAL.name}</p>
-        <p className="text-sm text-body">{TESTIMONIAL.role}</p>
+        <div className="mt-9 flex items-center gap-3">
+          <Image
+            src={TESTIMONIAL.photo}
+            alt={TESTIMONIAL.name}
+            width={52}
+            height={52}
+            className="h-[52px] w-[52px] rounded-full object-cover shadow-mid ring-2 ring-white"
+          />
+          <div className="text-left">
+            <p className="flex items-center gap-1.5 text-[15px] font-semibold">
+              {TESTIMONIAL.name}
+              <BadgeCheck className="h-4 w-4 text-sage-mid" aria-hidden="true" />
+            </p>
+            <p className="text-[13px] text-body">{TESTIMONIAL.role}</p>
+          </div>
+        </div>
       </Reveal>
     </section>
   );

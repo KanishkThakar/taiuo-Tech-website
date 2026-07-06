@@ -19,8 +19,8 @@ export default function HowItWorks() {
           className="relative grid grid-cols-3 gap-12 before:absolute before:left-[18%] before:right-[18%] before:top-6 before:border-t-2 before:border-dashed before:border-line max-md:grid-cols-1 max-md:gap-10 max-md:before:hidden"
         >
           {HOW_STEPS.map((s, i) => (
-            <div key={s.title} className="relative bg-white text-center">
-              <span className="relative z-[1] inline-grid h-12 w-12 place-items-center rounded-full bg-ink text-[19px] font-semibold text-white">
+            <div key={s.title} className="group relative bg-white text-center">
+              <span className="relative z-[1] inline-grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-[#2b3434] to-ink text-[19px] font-semibold text-white shadow-[0_10px_28px_-10px_rgb(26_34_34/0.6)] ring-1 ring-white/10 transition-transform duration-300 ease-smooth group-hover:-translate-y-1">
                 {i + 1}
               </span>
               <h3 className="mt-6 text-[1.15rem] font-medium">{s.title}</h3>

@@ -34,7 +34,11 @@ export default function Pricing() {
         </Reveal>
 
         <Reveal className="mx-auto mt-14 max-w-96">
-          <div className="rounded-3xl border border-white/10 bg-white/[0.05] p-[38px_34px] text-center">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.09] to-white/[0.03] p-[38px_34px] text-center shadow-[0_30px_80px_-30px_rgb(0_0_0/0.7)]">
+            <div
+              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"
+              aria-hidden="true"
+            />
             <p className="text-[13px] uppercase tracking-[0.1em] text-white/50">Taiuo Membership</p>
             <div className="mt-4 flex items-baseline justify-center gap-1.5">
               <span className="text-5xl font-bold leading-none">$150</span>

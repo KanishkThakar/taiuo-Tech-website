@@ -50,7 +50,7 @@ export default function Objection() {
                 key={c.title}
                 className="rounded-[20px] border border-white/15 bg-white/[0.08] p-8 backdrop-blur-xl transition-[background,transform] duration-300 ease-smooth hover:-translate-y-1 hover:bg-white/[0.12]"
               >
-                <div className="grid h-[54px] w-[54px] place-items-center rounded-[15px] border border-white/[0.12] bg-white/10 text-white">
+                <div className="grid h-[54px] w-[54px] place-items-center rounded-[15px] border border-white/[0.14] bg-white/10 text-white shadow-[0_0_24px_-6px_rgb(200_212_212/0.35)] ring-1 ring-white/5">
                   <Icon className="h-6 w-6" strokeWidth={1.5} aria-hidden="true" />
                 </div>
                 <h3 className="mt-5 text-[1.15rem] font-medium text-white">{c.title}</h3>
