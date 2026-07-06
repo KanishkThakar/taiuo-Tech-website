@@ -8,7 +8,10 @@ export default function Learn() {
     <section className="section-pad bg-cream">
       <div className="container-x">
         <Reveal stagger className="mx-auto mb-10 max-w-[640px] text-center">
-          <span className="badge-pill bg-[#ECEEEE]">Informative</span>
+          <span className="badge-pill">
+            <span className="badge-dot" aria-hidden="true" />
+            Informative
+          </span>
           <h2 className="h2-display mt-5">
             You will <span className="h-light">learn..</span>
           </h2>

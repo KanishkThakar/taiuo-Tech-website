@@ -57,7 +57,7 @@ export default function Stats() {
                   <motion.div
                     key={s.title}
                     variants={card}
-                    className="rounded-2xl bg-white p-[30px_26px] shadow-soft transition-[transform,box-shadow] duration-300 ease-smooth hover:-translate-y-[3px] hover:shadow-mid"
+                    className="card card-hover p-[30px_26px]"
                   >
                     <p className="text-[clamp(2rem,3vw,2.6rem)] font-semibold leading-[1.1] tracking-[-0.02em] tabular-nums">
                       <CountUp value={s.num} />

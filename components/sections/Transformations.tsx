@@ -9,7 +9,10 @@ export default function Transformations() {
     <section className="section-pad bg-white" id="transform">
       <div className="container-x grid grid-cols-[1.1fr_1fr] items-center gap-16 max-lg:grid-cols-1 max-lg:gap-12">
         <Reveal stagger>
-          <span className="badge-pill">New Approach</span>
+          <span className="badge-pill">
+            <span className="badge-dot" aria-hidden="true" />
+            New Approach
+          </span>
           <h2 className="h2-display mt-5">
             Life-changing
             <br />

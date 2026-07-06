@@ -64,7 +64,10 @@ export default function NewWay() {
     <section className="section-pad bg-white" id="why">
       <div className="container-x">
         <Reveal stagger className="mx-auto mb-14 max-w-[640px] text-center">
-          <span className="badge-pill">Personalized Analysis</span>
+          <span className="badge-pill">
+            <span className="badge-dot" aria-hidden="true" />
+            Personalized Analysis
+          </span>
           <h2 className="h2-display mt-5">
             A new way to <span className="h-light">glow-up</span>
           </h2>

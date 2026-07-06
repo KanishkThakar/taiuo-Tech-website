@@ -105,15 +105,25 @@
   }
 
   .badge-pill {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #5b6270; /* ≥4.5:1 on the pill gray */
-    background: #f0f1f2;
+    color: #4e5a5a; /* sage-ink, ≥4.5:1 on the tint */
+    background: rgb(168 181 181 / 0.14);
+    border: 1px solid rgb(168 181 181 / 0.28);
     padding: 6px 14px;
     border-radius: 9999px;
+  }
+  /* optional leading dot for badges (add a <span class="badge-dot"/>) */
+  .badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    background: var(--color-sage-mid);
   }
   .caption-label {
     font-size: 12px;
@@ -163,11 +173,12 @@
   .btn-glass {
     background: rgb(255 255 255 / 0.32);
     color: var(--color-ink);
+    border: 1px solid rgb(255 255 255 / 0.55);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
   .btn-glass:hover {
-    background: rgb(255 255 255 / 0.5);
+    background: rgb(255 255 255 / 0.55);
   }
 
   .pill-tab {
@@ -178,17 +189,42 @@
     background: #efefef;
     color: #5b6472; /* ≥4.5:1 on the pill gray */
     transition:
-      background 0.15s,
-      color 0.15s;
+      background 0.2s var(--ease-smooth),
+      color 0.2s var(--ease-smooth),
+      box-shadow 0.2s var(--ease-smooth),
+      transform 0.15s var(--ease-smooth);
     min-height: 40px;
     cursor: pointer;
   }
   .pill-tab:hover {
-    background: #e4e5e6;
+    background: #e6e8e8;
+  }
+  .pill-tab:active {
+    transform: scale(0.97);
   }
   .pill-tab[data-state="active"] {
     background: var(--color-ink);
     color: #fff;
+    box-shadow: var(--shadow-mid);
+  }
+
+  /* premium surface cards — consistent depth across the site */
+  .card {
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+  }
+  .card-hover {
+    transition:
+      transform 0.35s var(--ease-smooth),
+      box-shadow 0.35s var(--ease-smooth),
+      border-color 0.35s var(--ease-smooth);
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-float);
+    border-color: rgb(168 181 181 / 0.4);
   }
 }
 
