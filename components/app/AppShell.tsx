@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { LogOut, Menu, Plus, Search, X } from "lucide-react";
+import { LogOut, Menu, Plus, Search, Sparkles, X } from "lucide-react";
 import { LogoLockup } from "@/components/visuals/Logo";
 import { ThemeToggle } from "@/components/app/theme";
 import { useUser } from "@/components/app/session";
 import { useCommand } from "@/components/app/command";
+import { useAssistant } from "@/components/app/assistant";
 import { useAdminAccess } from "@/components/app/hooks";
 import { Notifications } from "@/components/app/Notifications";
 import {
@@ -108,6 +109,7 @@ function pageTitle(pathname: string): string {
 export default function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const { setOpen } = useCommand();
+  const { setOpen: setAssistantOpen } = useAssistant();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -187,6 +189,14 @@ export default function AppShell({ children }: { children: ReactNode }) {
                 aria-label="Search"
               >
                 <Search className="h-[18px] w-[18px]" strokeWidth={1.75} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setAssistantOpen(true)}
+                className="icon-btn"
+                aria-label="Open assistant"
+              >
+                <Sparkles className="h-[18px] w-[18px]" strokeWidth={1.75} />
               </button>
               <Notifications />
               <ThemeToggle />

@@ -3,9 +3,10 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Command } from "cmdk";
-import { LogOut, MoonStar, Sparkles } from "lucide-react";
+import { LogOut, MessageCircle, MoonStar, Sparkles } from "lucide-react";
 import { useTheme } from "@/components/app/theme";
 import { useUser } from "@/components/app/session";
+import { useAssistant } from "@/components/app/assistant";
 import { APP_NAV, APP_NAV_ACCOUNT } from "@/components/app/nav";
 
 interface CommandCtxValue {
@@ -27,6 +28,7 @@ export function CommandProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { setChoice, resolved } = useTheme();
   const { signOut } = useUser();
+  const { setOpen: setAssistantOpen } = useAssistant();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -95,6 +97,17 @@ export function CommandProvider({ children }: { children: ReactNode }) {
               >
                 <Sparkles className="h-[18px] w-[18px] text-body" strokeWidth={1.75} />
                 Start a new analysis
+              </Command.Item>
+              <Command.Item
+                value="Ask the assistant"
+                onSelect={() => {
+                  setOpen(false);
+                  setAssistantOpen(true);
+                }}
+                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] text-ink data-[selected=true]:bg-surface-2"
+              >
+                <MessageCircle className="h-[18px] w-[18px] text-body" strokeWidth={1.75} />
+                Ask the assistant
               </Command.Item>
               <Command.Item
                 value="Toggle theme"

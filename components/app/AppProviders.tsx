@@ -4,6 +4,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { ThemeProvider, useTheme } from "@/components/app/theme";
 import { AppSession } from "@/components/app/session";
 import { CommandProvider } from "@/components/app/command";
+import { AssistantProvider } from "@/components/app/assistant";
 import AppShell from "@/components/app/AppShell";
 
 function ThemedRoot({ children }: { children: ReactNode }) {
@@ -31,9 +32,11 @@ export default function AppProviders({ children }: { children: ReactNode }) {
     <ThemeProvider>
       <ThemedRoot>
         <AppSession>
-          <CommandProvider>
-            <AppShell>{children}</AppShell>
-          </CommandProvider>
+          <AssistantProvider>
+            <CommandProvider>
+              <AppShell>{children}</AppShell>
+            </CommandProvider>
+          </AssistantProvider>
         </AppSession>
       </ThemedRoot>
     </ThemeProvider>
