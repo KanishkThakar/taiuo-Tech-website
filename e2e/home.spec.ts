@@ -66,8 +66,18 @@ test("FAQ accordion is single-open and switches categories", async ({ page }) =>
 
 test("primary CTAs route into the product flow", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: "Start my plan" }).first().click();
-  await expect(page).toHaveURL(/\/onboarding/);
+  const cta = page.getByRole("link", { name: "Start my plan" }).first();
+  await expect(cta).toBeVisible();
+  await cta.scrollIntoViewIfNeeded();
+  // The CTA is a client <Link>; a click landing mid-hydration can be dropped
+  // (handler attached, router not yet ready). Re-click while still on the home
+  // page until the route actually changes. Onboarding is auth-gated, so an
+  // unauthenticated visitor lands on onboarding and is bounced to login — both
+  // count as entering the product flow.
+  await expect(async () => {
+    if (new URL(page.url()).pathname === "/") await cta.click();
+    await page.waitForURL(/\/(onboarding|login)/, { timeout: 2500 });
+  }).toPass({ timeout: 20_000, intervals: [400, 900, 1800] });
 });
 
 test("mobile menu opens, closes on Escape, locks scroll", async ({ page }) => {

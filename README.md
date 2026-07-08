@@ -47,11 +47,17 @@ pnpm format     # Prettier
 
 ```
 app/                 layout (fonts, metadata), page (17-section homepage), globals.css (tokens)
-components/sections/ one component per page block (3.1–3.17 of the master prompt)
-components/visuals/  React SVG visuals (face-scan hero, before/after faces, scenes, thumbs)
-components/motion/   LenisProvider, GSAP Reveal, CountUp
-lib/data.ts          all page copy as typed data
-lib/supabase.ts      Supabase client factory (env-driven)
+app/(app)/           authenticated product app (route group — dashboard, scan, history,
+                     reports, goals, profile, settings, notifications, admin) + error boundary
+app/auth/callback    OAuth / email-confirm / recovery completion (PKCE)
+components/sections/  one component per marketing block (3.1–3.17 of the master prompt)
+components/visuals/   React SVG visuals + refined LogoMark/Wordmark
+components/motion/     LenisProvider, Reveal, CountUp
+components/app/       app shell, theme provider, session gate, ⌘K palette, charts, nav
+components/product/   auth-page shell + Google/Apple OAuth buttons
+lib/data.ts          all marketing copy as typed data
+lib/product/         app data layer: types, services (Supabase → mock fallback), formatters
+lib/supabase.ts      Supabase client factory (env-driven, PKCE flow)
 ```
 
 ## Environment (Supabase)
@@ -70,6 +76,25 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 Auth pages: `/login`, `/signup` · Onboarding wizard: `/onboarding` (6 angle-labeled photo
 uploads → storage + analysis request) · Status: `/dashboard`.
+
+## Product app (Phase 2)
+
+The authenticated app lives under `app/(app)/` (a route group — no URL prefix) behind a
+client session gate. It works **before any backend is configured**: every service in
+`lib/product/data.ts` tries Supabase and falls back to deterministic seeded demo data, so
+screens render immediately and light up with real rows once the schema is applied.
+
+- **Routes:** `/dashboard` (health score, trend, metrics, insights, habits, achievements),
+  `/scan` (live webcam + animated mesh → *simulated* analysis), `/history`, `/reports`,
+  `/goals`, `/profile`, `/settings`, `/notifications`, `/admin`.
+- **Auth:** email + **Google/Apple OAuth** (PKCE) → `/auth/callback`; `/forgot-password` +
+  `/reset-password`. Enable the Google/Apple providers in the Supabase dashboard to activate them.
+- **Theme:** app-only light/dark/system, scoped to `.app-theme` — the marketing site stays
+  light. Tokens re-map per theme; all app routes clear WCAG AA in both themes.
+- **Admin:** `/admin` is client-gated by `useAdminAccess` and **server-enforced** by RLS
+  (`is_admin()` + admin SELECT policies in `schema.sql`). Grant access by setting a profile's
+  `role` to `admin`.
+- **Resilience:** route + global error boundaries (Next 16 `unstable_retry`) and a custom 404.
 
 ## Deploy (Vercel)
 
