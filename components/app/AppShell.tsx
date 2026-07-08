@@ -9,8 +9,15 @@ import { LogoLockup } from "@/components/visuals/Logo";
 import { ThemeToggle } from "@/components/app/theme";
 import { useUser } from "@/components/app/session";
 import { useCommand } from "@/components/app/command";
+import { useAdminAccess } from "@/components/app/hooks";
 import { Notifications } from "@/components/app/Notifications";
-import { APP_NAV, APP_NAV_ACCOUNT, type AppNavItem } from "@/components/app/nav";
+import {
+  APP_NAV,
+  APP_NAV_ACCOUNT,
+  APP_NAV_ADMIN,
+  APP_NAV_ALL,
+  type AppNavItem,
+} from "@/components/app/nav";
 
 function initialsFromEmail(email: string | null): string {
   if (!email) return "T";
@@ -59,6 +66,8 @@ function NavList({
 function SidebarContent({ onNavigate = () => {} }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const { email, signOut } = useUser();
+  const admin = useAdminAccess();
+  const nav = admin === "granted" ? [...APP_NAV, ...APP_NAV_ADMIN] : APP_NAV;
   return (
     <div className="flex h-full flex-col gap-6 p-4">
       <Link href="/dashboard" onClick={onNavigate} className="px-2 py-1">
@@ -68,7 +77,7 @@ function SidebarContent({ onNavigate = () => {} }: { onNavigate?: () => void }) 
         <Plus className="h-[18px] w-[18px]" strokeWidth={2} />
         New scan
       </Link>
-      <NavList items={APP_NAV} pathname={pathname} onNavigate={onNavigate} />
+      <NavList items={nav} pathname={pathname} onNavigate={onNavigate} />
       <div className="mt-auto grid gap-1">
         <NavList items={APP_NAV_ACCOUNT} pathname={pathname} onNavigate={onNavigate} />
         <div className="mt-2 flex items-center gap-3 rounded-xl border border-line p-2.5">
@@ -92,7 +101,7 @@ function SidebarContent({ onNavigate = () => {} }: { onNavigate?: () => void }) 
 
 function pageTitle(pathname: string): string {
   const seg = `/${pathname.split("/")[1] ?? ""}`;
-  const found = [...APP_NAV, ...APP_NAV_ACCOUNT].find((i) => i.href === seg);
+  const found = APP_NAV_ALL.find((i) => i.href === seg);
   return found?.label ?? "Taiuo";
 }
 

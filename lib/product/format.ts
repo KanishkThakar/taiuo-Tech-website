@@ -20,3 +20,17 @@ export function formatDate(iso: string): string {
     year: "numeric",
   });
 }
+
+/** Compact number: 1234 → "1,234", 11408 → "11,408". */
+export function formatNumber(n: number): string {
+  return n.toLocaleString("en-US");
+}
+
+/** Whole-dollar currency: 18640 → "$18,640". */
+export function formatCurrency(n: number): string {
+  return n.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
+}

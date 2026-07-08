@@ -1,10 +1,18 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { AppNotification, DashboardData, FaceScan, Habit, Profile } from "@/lib/product/types";
+import type {
+  AdminOverview,
+  AppNotification,
+  DashboardData,
+  FaceScan,
+  Habit,
+  Profile,
+} from "@/lib/product/types";
 import {
   MOCK_ACHIEVEMENTS,
   MOCK_HABITS,
   MOCK_INSIGHTS,
   MOCK_RECOMMENDATIONS,
+  mockAdminOverview,
   mockDashboard,
   mockHealth,
   mockNotifications,
@@ -35,6 +43,7 @@ export async function loadProfile(
       gender: (row.gender as string) ?? null,
       goals: (row.goals as string[]) ?? null,
       plan: (row.plan as string) ?? null,
+      role: (row.role as string) ?? null,
     };
   } catch {
     return null;
@@ -117,6 +126,30 @@ export async function loadNotifications(
     return data as AppNotification[];
   } catch {
     return mockNotifications();
+  }
+}
+
+/**
+ * Aggregated admin overview. Real counts are pulled where the schema allows
+ * (head-count queries), and the richer breakdowns fall back to demo data so the
+ * admin surface renders before any analytics backend exists.
+ */
+export async function loadAdminOverview(supabase: SupabaseClient): Promise<AdminOverview> {
+  const mock = mockAdminOverview();
+  try {
+    const [{ count: users }, { count: scans }] = await Promise.all([
+      supabase.from("profiles").select("id", { count: "exact", head: true }),
+      supabase.from("face_scans").select("id", { count: "exact", head: true }),
+    ]);
+    if (users == null && scans == null) return mock;
+    return {
+      ...mock,
+      totalUsers: users ?? mock.totalUsers,
+      totalScans: scans ?? mock.totalScans,
+      usingMock: false,
+    };
+  } catch {
+    return mock;
   }
 }
 

@@ -1,5 +1,8 @@
 import type {
   Achievement,
+  AdminActivity,
+  AdminOverview,
+  AdminUserRow,
   AppNotification,
   DashboardData,
   FaceScan,
@@ -224,4 +227,71 @@ export function mockDashboard(uid: string, profile: Profile | null): DashboardDa
 export function simulateScanResult(seed: string): FaceScan {
   const rng = makeRng(seed);
   return buildScan(rng, `scan-${seed}`, daysAgoISO(0), 74 + Math.round(rng() * 8));
+}
+
+/* ---- Admin ---- */
+
+const ADMIN_NAMES = [
+  "Ava Chen", "Liam Okafor", "Sofia Rossi", "Noah Patel", "Mia Nguyen",
+  "Ethan Brooks", "Isabella Costa", "Lucas Meyer", "Amara Diallo", "Yuki Tanaka",
+  "Oliver Grant", "Chloe Dubois", "Marcus Webb", "Priya Rao", "Elena Petrova",
+];
+const ADMIN_ACTIONS = [
+  "completed a face scan",
+  "upgraded to Pro",
+  "updated their protocol",
+  "signed up",
+  "hit a 30-day streak",
+  "exported their data",
+];
+
+export function mockAdminOverview(): AdminOverview {
+  const rng = makeRng("taiuo:admin");
+  const plans: AdminUserRow["plan"][] = ["free", "pro", "yearly"];
+  const statuses: AdminUserRow["status"][] = ["active", "active", "active", "invited", "churned"];
+
+  const users: AdminUserRow[] = ADMIN_NAMES.map((name, i) => {
+    const plan = plans[Math.floor(rng() * plans.length)] ?? "free";
+    const status = statuses[Math.floor(rng() * statuses.length)] ?? "active";
+    const handle = name.toLowerCase().replace(/[^a-z]+/g, ".");
+    return {
+      id: `u${i + 1}`,
+      name,
+      email: `${handle}@example.com`,
+      plan,
+      scans: Math.floor(rng() * 14),
+      lastActive: daysAgoISO(Math.floor(rng() * 20)),
+      status,
+    };
+  });
+
+  const activity: AdminActivity[] = Array.from({ length: 8 }, (_, i) => {
+    const who = ADMIN_NAMES[Math.floor(rng() * ADMIN_NAMES.length)] ?? "A member";
+    const what = ADMIN_ACTIONS[Math.floor(rng() * ADMIN_ACTIONS.length)] ?? "was active";
+    return { id: `act${i}`, user: who, action: what, at: daysAgoISO(0) };
+  });
+
+  const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const signups: WeeklyPoint[] = labels.map((label) => ({
+    label,
+    value: 20 + Math.round(rng() * 60),
+  }));
+
+  return {
+    totalUsers: 2847,
+    activeUsers: 1932,
+    totalScans: 11408,
+    avgScore: 76,
+    scansThisWeek: signups.reduce((s, p) => s + p.value, 0),
+    revenueMrr: 18640,
+    signups,
+    planSplit: [
+      { plan: "Free", count: users.filter((u) => u.plan === "free").length },
+      { plan: "Pro", count: users.filter((u) => u.plan === "pro").length },
+      { plan: "Yearly", count: users.filter((u) => u.plan === "yearly").length },
+    ],
+    users,
+    activity,
+    usingMock: true,
+  };
 }

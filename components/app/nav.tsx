@@ -1,9 +1,11 @@
 import {
+  Bell,
   FileText,
   History,
   LayoutDashboard,
   ScanFace,
   Settings,
+  ShieldCheck,
   Target,
   User,
   type LucideIcon,
@@ -24,6 +26,12 @@ export const APP_NAV: AppNavItem[] = [
 ];
 
 export const APP_NAV_ACCOUNT: AppNavItem[] = [
+  { href: "/notifications", label: "Notifications", Icon: Bell },
   { href: "/profile", label: "Profile", Icon: User },
   { href: "/settings", label: "Settings", Icon: Settings },
 ];
+
+export const APP_NAV_ADMIN: AppNavItem[] = [{ href: "/admin", label: "Admin", Icon: ShieldCheck }];
+
+/** All nav items, for title lookup / command palette. */
+export const APP_NAV_ALL: AppNavItem[] = [...APP_NAV, ...APP_NAV_ACCOUNT, ...APP_NAV_ADMIN];

@@ -9,6 +9,7 @@ export interface Profile {
   gender: string | null;
   goals: string[] | null;
   plan: string | null;
+  role: string | null;
 }
 
 export type MetricStatus = "excellent" | "good" | "fair" | "attention";
@@ -85,6 +86,39 @@ export interface AppNotification {
   body: string;
   read: boolean;
   created_at: string;
+}
+
+/* ---- Admin ---- */
+
+export interface AdminUserRow {
+  id: string;
+  name: string;
+  email: string;
+  plan: "free" | "pro" | "yearly";
+  scans: number;
+  lastActive: string; // ISO
+  status: "active" | "invited" | "churned";
+}
+
+export interface AdminActivity {
+  id: string;
+  user: string;
+  action: string;
+  at: string; // ISO
+}
+
+export interface AdminOverview {
+  totalUsers: number;
+  activeUsers: number;
+  totalScans: number;
+  avgScore: number;
+  scansThisWeek: number;
+  revenueMrr: number;
+  signups: WeeklyPoint[]; // last 7 days
+  planSplit: { plan: string; count: number }[];
+  users: AdminUserRow[];
+  activity: AdminActivity[];
+  usingMock: boolean;
 }
 
 export interface DashboardData {
