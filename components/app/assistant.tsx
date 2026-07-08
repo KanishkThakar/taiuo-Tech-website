@@ -54,23 +54,47 @@ export function AssistantProvider({ children }: { children: ReactNode }) {
   const nextId = useRef(1);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking]);
 
-  // Modal keyboard behaviour: close on Escape, move focus into the panel on open.
+  // Full modal keyboard behaviour: Escape to close, focus into the panel on
+  // open, Tab trapped within the panel, and focus restored to the opener on close.
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
+    restoreFocusRef.current = document.activeElement as HTMLElement | null;
     const focusTimer = setTimeout(() => inputRef.current?.focus(), 60);
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const items = panelRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (!first || !last) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("keydown", onKey);
       clearTimeout(focusTimer);
+      restoreFocusRef.current?.focus?.();
     };
   }, [open]);
 
@@ -128,6 +152,7 @@ export function AssistantProvider({ children }: { children: ReactNode }) {
               onClick={() => setOpen(false)}
             />
             <motion.aside
+              ref={panelRef}
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
