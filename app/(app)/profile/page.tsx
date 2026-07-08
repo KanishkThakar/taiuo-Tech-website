@@ -56,7 +56,7 @@ export default function ProfilePage() {
           <p className="truncate text-lg font-semibold text-ink">{displayName || "Your name"}</p>
           <p className="truncate text-[14px] text-body">{email}</p>
           {profile?.plan && (
-            <span className="mt-1 inline-block rounded-full bg-sage-base/15 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[#4E5F5F]">
+            <span className="mt-1 inline-block rounded-full bg-sage-base/15 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[color:var(--sage-accent)]">
               {profile.plan} plan
             </span>
           )}
@@ -94,7 +94,7 @@ export default function ProfilePage() {
               <span className="mb-1.5 block text-sm font-medium text-ink">Goals</span>
               <div className="flex flex-wrap gap-2">
                 {profile.goals.map((g) => (
-                  <span key={g} className="rounded-full bg-sage-base/15 px-3 py-1 text-[13px] font-medium text-[#4E5F5F]">
+                  <span key={g} className="rounded-full bg-sage-base/15 px-3 py-1 text-[13px] font-medium text-[color:var(--sage-accent)]">
                     {g}
                   </span>
                 ))}

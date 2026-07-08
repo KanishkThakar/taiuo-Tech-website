@@ -23,7 +23,7 @@ import { loadDashboard } from "@/lib/product/data";
 import { relativeTime } from "@/lib/product/format";
 import type { DashboardData } from "@/lib/product/types";
 import { useUser } from "@/components/app/session";
-import { AreaTrend, MetricBar, RadialScore, STATUS_COLOR } from "@/components/app/charts";
+import { AreaTrend, MetricBar, RadialScore, STATUS_TEXT } from "@/components/app/charts";
 
 const HABIT_ICONS: Record<string, LucideIcon> = { sun: Sun, shield: Shield, droplet: Droplet, moon: Moon };
 const ACHIEVE_ICONS: Record<string, LucideIcon> = {
@@ -84,7 +84,7 @@ export default function DashboardPage() {
           <p className="mt-1 text-[15px] text-body">Here&apos;s how your glow-up is progressing.</p>
         </div>
         {data.usingMock && (
-          <span className="rounded-full border border-line bg-surface-2 px-3 py-1 text-xs font-medium text-body">
+          <span className="rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-body">
             Demo data
           </span>
         )}
@@ -98,8 +98,9 @@ export default function DashboardPage() {
           <div className="mt-3 flex items-center gap-2">
             <span
               className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${
-                health.delta >= 0 ? "bg-[#5f8f7e]/15 text-[#4d7c6b]" : "bg-[#c98a6a]/15 text-[#b06a4a]"
+                health.delta >= 0 ? "bg-[#5f8f7e]/15" : "bg-[#c98a6a]/15"
               }`}
+              style={{ color: health.delta >= 0 ? "var(--status-excellent)" : "var(--status-attention)" }}
             >
               <TrendingUp className="h-3.5 w-3.5" /> {health.delta >= 0 ? "+" : ""}
               {health.delta} vs last
@@ -161,7 +162,7 @@ export default function DashboardPage() {
               <div key={m.key}>
                 <div className="mb-1.5 flex items-center justify-between text-[13.5px]">
                   <span className="text-ink">{m.label}</span>
-                  <span className="font-semibold tabular-nums" style={{ color: STATUS_COLOR[m.status] }}>
+                  <span className="font-semibold tabular-nums" style={{ color: STATUS_TEXT[m.status] }}>
                     {m.score}
                   </span>
                 </div>
@@ -196,7 +197,7 @@ export default function DashboardPage() {
           <div className="grid gap-3">
             {recommendations.map((r) => (
               <div key={r.id} className="flex items-start gap-3 rounded-xl border border-line p-3">
-                <span className="mt-0.5 grid h-8 w-8 flex-none place-items-center rounded-lg bg-sage-base/15 text-[#5F7070]">
+                <span className="mt-0.5 grid h-8 w-8 flex-none place-items-center rounded-lg bg-sage-base/15 text-[color:var(--sage-accent)]">
                   <Target className="h-4 w-4" strokeWidth={1.75} />
                 </span>
                 <div className="min-w-0">
@@ -222,7 +223,7 @@ export default function DashboardPage() {
               const Icon = HABIT_ICONS[hb.icon] ?? Sun;
               return (
                 <div key={hb.id} className="flex items-center gap-3 rounded-xl border border-line p-3">
-                  <span className="grid h-8 w-8 flex-none place-items-center rounded-lg bg-sage-base/15 text-[#5F7070]">
+                  <span className="grid h-8 w-8 flex-none place-items-center rounded-lg bg-sage-base/15 text-[color:var(--sage-accent)]">
                     <Icon className="h-4 w-4" strokeWidth={1.75} />
                   </span>
                   <div className="min-w-0 flex-1">
@@ -232,6 +233,7 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <span
+                    role="img"
                     className={`h-5 w-5 flex-none rounded-full border-2 ${
                       hb.done_today ? "border-[#5f8f7e] bg-[#5f8f7e]" : "border-line"
                     }`}
@@ -259,18 +261,22 @@ export default function DashboardPage() {
               <div
                 key={a.id}
                 title={a.detail}
-                className={`flex flex-col items-center gap-2 rounded-xl border border-line p-3 text-center ${
-                  a.unlocked ? "" : "opacity-45"
+                className={`flex flex-col items-center gap-2 rounded-xl border p-3 text-center ${
+                  a.unlocked ? "border-line" : "border-dashed border-line bg-surface-2/40"
                 }`}
               >
                 <span
                   className={`grid h-10 w-10 place-items-center rounded-full ${
-                    a.unlocked ? "bg-sage-base/20 text-[#4E5F5F]" : "bg-surface-2 text-faint"
+                    a.unlocked ? "bg-sage-base/20 text-[color:var(--sage-accent)]" : "bg-surface-2 text-faint"
                   }`}
                 >
                   <Icon className="h-5 w-5" strokeWidth={1.75} />
                 </span>
-                <span className="text-[11px] font-medium leading-tight text-ink">{a.title}</span>
+                <span
+                  className={`text-[11px] font-medium leading-tight ${a.unlocked ? "text-ink" : "text-body"}`}
+                >
+                  {a.title}
+                </span>
               </div>
             );
           })}

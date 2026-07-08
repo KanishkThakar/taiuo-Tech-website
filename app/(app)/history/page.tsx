@@ -43,7 +43,11 @@ export default function HistoryPage() {
             <p className="text-sm text-body">Since your first scan</p>
             <p
               className={`mt-1 flex items-center gap-1.5 text-2xl font-semibold ${
-                totalDelta > 0 ? "text-[#4d7c6b]" : totalDelta < 0 ? "text-[#b06a4a]" : "text-ink"
+                totalDelta > 0
+                  ? "text-[color:var(--status-excellent)]"
+                  : totalDelta < 0
+                    ? "text-[color:var(--status-attention)]"
+                    : "text-ink"
               }`}
             >
               {totalDelta > 0 ? <TrendingUp className="h-5 w-5" /> : totalDelta < 0 ? <TrendingDown className="h-5 w-5" /> : <Minus className="h-5 w-5" />}
@@ -86,7 +90,9 @@ export default function HistoryPage() {
                 {prev && (
                   <span
                     className={`hidden items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold sm:inline-flex ${
-                      delta >= 0 ? "bg-[#5f8f7e]/15 text-[#4d7c6b]" : "bg-[#c98a6a]/15 text-[#b06a4a]"
+                      delta >= 0
+                        ? "bg-[#5f8f7e]/15 text-[color:var(--status-excellent)]"
+                        : "bg-[#c98a6a]/15 text-[color:var(--status-attention)]"
                     }`}
                   >
                     {delta >= 0 ? "+" : ""}

@@ -30,15 +30,15 @@ const fade = {
 };
 
 const STATUS_STYLE: Record<AdminUserRow["status"], string> = {
-  active: "bg-[#5f8f7e]/15 text-[#4d7c6b]",
-  invited: "bg-[#b79a5e]/15 text-[#8a7238]",
-  churned: "bg-[#c98a6a]/15 text-[#b06a4a]",
+  active: "bg-[#5f8f7e]/15 text-[color:var(--status-excellent)]",
+  invited: "bg-[#b79a5e]/15 text-[color:var(--status-fair)]",
+  churned: "bg-[#c98a6a]/15 text-[color:var(--status-attention)]",
 };
 
 const PLAN_STYLE: Record<AdminUserRow["plan"], string> = {
   free: "text-faint",
   pro: "text-ink",
-  yearly: "text-[#4d7c6b]",
+  yearly: "text-[color:var(--status-excellent)]",
 };
 
 function Stat({
@@ -56,7 +56,7 @@ function Stat({
     <div className="app-card p-5">
       <div className="flex items-center justify-between">
         <span className="text-[13px] font-medium text-body">{label}</span>
-        <span className="grid h-8 w-8 place-items-center rounded-lg bg-sage-base/15 text-[#5F7070]">
+        <span className="grid h-8 w-8 place-items-center rounded-lg bg-sage-base/15 text-[color:var(--sage-accent)]">
           <Icon className="h-4 w-4" strokeWidth={1.75} />
         </span>
       </div>
@@ -126,7 +126,7 @@ export default function AdminPage() {
           <p className="mt-1 text-[15px] text-body">Platform health, members, and activity at a glance.</p>
         </div>
         {data.usingMock && (
-          <span className="rounded-full border border-line bg-surface-2 px-3 py-1 text-xs font-medium text-body">
+          <span className="rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-body">
             Demo preview
           </span>
         )}
@@ -192,7 +192,7 @@ export default function AdminPage() {
           <h3 className="text-sm font-semibold text-ink">Members</h3>
           <span className="text-xs text-body">{data.users.length} shown</span>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Members table (scrollable)">
           <table className="w-full min-w-[640px] text-left text-[13.5px]">
             <thead>
               <tr className="border-y border-line text-[12px] uppercase tracking-wide text-faint">

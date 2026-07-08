@@ -88,7 +88,7 @@ export default function SettingsPage() {
             <span className="text-[13px] text-faint">Verified</span>
           </Row>
           <Row title="Membership" desc="Taiuo yearly plan">
-            <span className="rounded-full bg-sage-base/15 px-2.5 py-1 text-[12px] font-semibold text-[#4E5F5F]">
+            <span className="rounded-full bg-sage-base/15 px-2.5 py-1 text-[12px] font-semibold text-[color:var(--sage-accent)]">
               Active
             </span>
           </Row>
@@ -126,7 +126,7 @@ export default function SettingsPage() {
           <Row title="Delete account" desc="Permanently remove your data">
             <button
               onClick={() => void deleteAccount()}
-              className="inline-flex items-center gap-2 rounded-full border border-[#e5484d]/30 px-4 py-2 text-sm font-medium text-[#d0464a] transition-colors hover:bg-[#e5484d]/10"
+              className="inline-flex items-center gap-2 rounded-full border border-[#e5484d]/30 px-4 py-2 text-sm font-medium text-[color:var(--danger-text)] transition-colors hover:bg-[#e5484d]/10"
             >
               <Trash2 className="h-4 w-4" /> Delete
             </button>

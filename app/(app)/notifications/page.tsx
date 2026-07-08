@@ -97,7 +97,7 @@ export default function NotificationsPage() {
                   n.read ? "" : "border-sage-base/30"
                 }`}
               >
-                <span className="mt-0.5 grid h-9 w-9 flex-none place-items-center rounded-lg bg-sage-base/15 text-[#5F7070]">
+                <span className="mt-0.5 grid h-9 w-9 flex-none place-items-center rounded-lg bg-sage-base/15 text-[color:var(--sage-accent)]">
                   <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
                 </span>
                 <div className="min-w-0 flex-1">

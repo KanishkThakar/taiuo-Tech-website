@@ -1,11 +1,23 @@
 import type { MetricStatus, WeeklyPoint } from "@/lib/product/types";
 
-/* status → sage-family colour (kept within the brand palette) */
+/* status → sage-family colour for FILLS (bars, dots): vivid in both themes */
 export const STATUS_COLOR: Record<MetricStatus, string> = {
   excellent: "#5f8f7e",
   good: "#7fa08f",
   fair: "#b79a5e",
   attention: "#c98a6a",
+};
+
+/**
+ * status → colour for TEXT. Maps to CSS variables that re-map per theme
+ * (darker on the light app surface, lighter on the dark one) so score labels
+ * and badges clear WCAG AA in both themes. Fills keep STATUS_COLOR above.
+ */
+export const STATUS_TEXT: Record<MetricStatus, string> = {
+  excellent: "var(--status-excellent)",
+  good: "var(--status-good)",
+  fair: "var(--status-fair)",
+  attention: "var(--status-attention)",
 };
 
 /** Circular progress ring with the score centred. Sage gradient stroke. */

@@ -5,7 +5,7 @@ import { Download, Share2, Sparkles } from "lucide-react";
 import { formatDate } from "@/lib/product/format";
 import type { Recommendation } from "@/lib/product/types";
 import { useDashboard } from "@/components/app/hooks";
-import { MetricBar, RadialScore, STATUS_COLOR } from "@/components/app/charts";
+import { MetricBar, RadialScore, STATUS_TEXT } from "@/components/app/charts";
 
 const CATEGORY_LABEL: Record<Recommendation["category"], string> = {
   skincare: "Skincare",
@@ -82,7 +82,7 @@ export default function ReportsPage() {
             <div key={m.key}>
               <div className="mb-1.5 flex items-center justify-between text-[13.5px]">
                 <span className="font-medium text-ink">{m.label}</span>
-                <span className="font-semibold tabular-nums" style={{ color: STATUS_COLOR[m.status] }}>
+                <span className="font-semibold tabular-nums" style={{ color: STATUS_TEXT[m.status] }}>
                   {m.score} · {m.status}
                 </span>
               </div>

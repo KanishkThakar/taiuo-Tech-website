@@ -78,7 +78,7 @@ export default function GoalsPage() {
           <p className="text-xs font-medium uppercase tracking-wider text-faint">Focus goals</p>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {goals.map((g) => (
-              <span key={g} className="rounded-full bg-sage-base/15 px-2.5 py-1 text-[12px] font-medium text-[#4E5F5F]">
+              <span key={g} className="rounded-full bg-sage-base/15 px-2.5 py-1 text-[12px] font-medium text-[color:var(--sage-accent)]">
                 {g}
               </span>
             ))}
@@ -103,7 +103,7 @@ export default function GoalsPage() {
                 onClick={() => toggle(hb.id)}
                 className="flex items-center gap-3 rounded-xl border border-line p-3 text-left transition-colors hover:border-sage-base/40"
               >
-                <span className="grid h-9 w-9 flex-none place-items-center rounded-lg bg-sage-base/15 text-[#5F7070]">
+                <span className="grid h-9 w-9 flex-none place-items-center rounded-lg bg-sage-base/15 text-[color:var(--sage-accent)]">
                   <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
                 </span>
                 <div className="min-w-0 flex-1">

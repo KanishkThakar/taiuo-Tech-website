@@ -10,7 +10,7 @@ import { simulateScanResult } from "@/lib/product/mock";
 import type { FaceScan } from "@/lib/product/types";
 import { useUser } from "@/components/app/session";
 import { FaceMesh } from "@/components/app/FaceMesh";
-import { MetricBar, RadialScore, STATUS_COLOR } from "@/components/app/charts";
+import { MetricBar, RadialScore, STATUS_TEXT } from "@/components/app/charts";
 
 type Stage = "intro" | "camera" | "processing" | "results";
 
@@ -98,7 +98,7 @@ export default function ScanPage() {
             exit={{ opacity: 0, y: -12 }}
             className="app-card p-8 text-center"
           >
-            <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-sage-base/15 text-[#5F7070]">
+            <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-sage-base/15 text-[color:var(--sage-accent)]">
               <ScanFace className="h-7 w-7" strokeWidth={1.5} />
             </span>
             <h2 className="mt-5 text-2xl font-semibold text-ink">AI Face Scan</h2>
@@ -169,7 +169,7 @@ export default function ScanPage() {
 
             {camError ? (
               <div className="mt-5 text-center">
-                <p className="text-sm text-[#b06a4a]">{camError}</p>
+                <p className="text-sm text-[color:var(--status-attention)]">{camError}</p>
                 <Link href="/onboarding" className="btn btn-dark mt-4 gap-2">
                   <Upload className="h-[18px] w-[18px]" /> Upload photos instead
                 </Link>
@@ -233,7 +233,7 @@ export default function ScanPage() {
             className="grid gap-5"
           >
             <div className="app-card flex flex-col items-center p-8 text-center">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#5f8f7e]/15 px-3 py-1 text-xs font-semibold text-[#4d7c6b]">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#5f8f7e]/15 px-3 py-1 text-xs font-semibold text-[color:var(--status-excellent)]">
                 <CheckCircle2 className="h-3.5 w-3.5" /> Analysis complete
               </span>
               <div className="mt-5">
@@ -252,7 +252,7 @@ export default function ScanPage() {
                   <div key={m.key}>
                     <div className="mb-1.5 flex items-center justify-between text-[13.5px]">
                       <span className="text-ink">{m.label}</span>
-                      <span className="font-semibold tabular-nums" style={{ color: STATUS_COLOR[m.status] }}>
+                      <span className="font-semibold tabular-nums" style={{ color: STATUS_TEXT[m.status] }}>
                         {m.score}
                       </span>
                     </div>

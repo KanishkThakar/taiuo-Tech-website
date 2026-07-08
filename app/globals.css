@@ -43,6 +43,13 @@
   --color-success: #10b981;
   --color-warning: #e0a13a;
   --color-danger: #e5484d;
+
+  /* status TEXT colours — darkened so score labels/badges clear WCAG AA on the
+     light app surface (fills keep the vivid STATUS_COLOR values in JS) */
+  --status-excellent: #3f6f5b;
+  --status-good: #467258;
+  --status-fair: #6a561f;
+  --status-attention: #955230;
 }
 
 /* ═══ app dark theme — re-maps the SAME token names, scoped so the public
@@ -53,17 +60,31 @@
   --color-surface-2: #1c2423;
   --color-ink: #ecf1f0;
   --color-body: #9aa5a3;
-  --color-faint: #7c8785;
+  --color-faint: #8b9492;
+  --sage-accent: #a9bab8; /* sage-tint chip text/icons (dark) */
+  --danger-text: #ef6d70;
   --color-line: rgba(255, 255, 255, 0.09);
   --color-cream: #12100e00; /* unused in app; keep transparent */
   --color-ring: rgba(200, 212, 212, 0.4);
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -18px rgb(0 0 0 / 0.6);
   --shadow-float: 0 2px 6px rgb(0 0 0 / 0.35), 0 28px 64px -24px rgb(0 0 0 / 0.7);
+  /* status text: lightened for AA on the dark surface */
+  --status-excellent: #6fa992;
+  --status-good: #8fb3a2;
+  --status-fair: #cbad74;
+  --status-attention: #d99e7f;
   color-scheme: dark;
 }
 
-/* app shell base surface */
+/* app shell base surface + light-app text tuning.
+   Muted text is darkened vs the marketing tokens so it clears WCAG AA on the
+   app's raised surfaces (surface-2). Scoped to .app-theme → marketing untouched.
+   The dark block above overrides where it needs lighter values. */
 .app-theme {
+  --color-body: #5c6570;
+  --color-faint: #626b76;
+  --sage-accent: #465857; /* sage-tint chip text/icons (light) */
+  --danger-text: #c73338;
   background: var(--color-canvas);
   color: var(--color-ink);
 }
