@@ -167,3 +167,38 @@ create policy "avatars update own" on storage.objects
   for update using (
     bucket_id = 'avatars' and auth.uid()::text = (storage.foldername(name))[1]
   );
+
+-- ═══════════════════════════════════════════════════════════════
+-- ADMIN — server-side enforcement for the /admin dashboard.
+-- The client gate (useAdminAccess) is UX only; these policies are the
+-- real boundary. Grant admin by setting a profile's role to 'admin'.
+-- ═══════════════════════════════════════════════════════════════
+
+-- SECURITY DEFINER so it reads role WITHOUT re-triggering profiles' RLS
+-- (which would recurse). Locked search_path; returns false for anon.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select coalesce((select role = 'admin' from public.profiles where id = auth.uid()), false);
+$$;
+
+revoke all on function public.is_admin() from public;
+grant execute on function public.is_admin() to authenticated;
+
+-- Permissive policies are OR'd with the "own row" ones above, so admins
+-- read everything while regular users still see only their own data.
+drop policy if exists "profiles select admin" on public.profiles;
+create policy "profiles select admin" on public.profiles
+  for select using (public.is_admin());
+
+drop policy if exists "face_scans select admin" on public.face_scans;
+create policy "face_scans select admin" on public.face_scans
+  for select using (public.is_admin());
+
+drop policy if exists "requests select admin" on public.analysis_requests;
+create policy "requests select admin" on public.analysis_requests
+  for select using (public.is_admin());
