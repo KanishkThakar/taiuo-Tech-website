@@ -53,11 +53,26 @@ export function AssistantProvider({ children }: { children: ReactNode }) {
   const [thinking, setThinking] = useState(false);
   const nextId = useRef(1);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, thinking]);
+
+  // Modal keyboard behaviour: close on Escape, move focus into the panel on open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const focusTimer = setTimeout(() => inputRef.current?.focus(), 60);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      clearTimeout(focusTimer);
+    };
+  }, [open]);
 
   useEffect(
     () => () => {
@@ -119,6 +134,7 @@ export function AssistantProvider({ children }: { children: ReactNode }) {
               transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
               className="fixed inset-y-0 right-0 z-[91] flex w-full max-w-[420px] flex-col border-l border-line bg-surface"
               role="dialog"
+              aria-modal="true"
               aria-label="Taiuo assistant"
             >
               <header className="flex items-center justify-between border-b border-line px-5 py-4">
@@ -207,6 +223,7 @@ export function AssistantProvider({ children }: { children: ReactNode }) {
               >
                 <div className="flex items-center gap-2 rounded-xl border border-line bg-surface-2 px-3 py-1.5 focus-within:border-sage-mid">
                   <input
+                    ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask about using Taiuo…"

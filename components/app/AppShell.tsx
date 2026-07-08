@@ -119,6 +119,16 @@ export default function AppShell({ children }: { children: ReactNode }) {
     };
   }, [mobileOpen]);
 
+  // close the mobile drawer on Escape
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
+
   return (
     <div className="flex min-h-svh">
         {/* desktop sidebar */}
@@ -143,6 +153,9 @@ export default function AppShell({ children }: { children: ReactNode }) {
                 exit={{ x: "-100%" }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="fixed inset-y-0 left-0 z-[61] w-[280px] border-r border-line bg-surface lg:hidden"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Menu"
               >
                 <button
                   type="button"
