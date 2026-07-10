@@ -35,6 +35,138 @@
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.03), 0 12px 32px -14px rgb(26 34 34 / 0.16);
   --shadow-float: 0 2px 4px rgb(0 0 0 / 0.03), 0 24px 56px -24px rgb(26 34 34 / 0.22);
   --shadow-glow: 0 0 48px -10px rgb(168 181 181 / 0.5);
+
+  /* app semantic surfaces (light defaults; re-mapped for dark under .app-theme) */
+  --color-canvas: #f6f7f7; /* app page background */
+  --color-surface: #ffffff; /* cards / panels */
+  --color-surface-2: #f1f3f3; /* raised / hover fills */
+  --color-success: #10b981;
+  --color-warning: #e0a13a;
+  --color-danger: #e5484d;
+
+  /* status TEXT colours — darkened so score labels/badges clear WCAG AA on the
+     light app surface (fills keep the vivid STATUS_COLOR values in JS) */
+  --status-excellent: #3f6f5b;
+  --status-good: #467258;
+  --status-fair: #6a561f;
+  --status-attention: #955230;
+}
+
+/* ═══ app dark theme — re-maps the SAME token names, scoped so the public
+   marketing site (never wrapped in .app-theme) stays light and untouched ═══ */
+.app-theme[data-theme="dark"] {
+  --color-canvas: #0d1211;
+  --color-surface: #151b1a;
+  --color-surface-2: #1c2423;
+  --color-ink: #ecf1f0;
+  --color-body: #9aa5a3;
+  --color-faint: #8b9492;
+  --sage-accent: #a9bab8; /* sage-tint chip text/icons (dark) */
+  --danger-text: #ef6d70;
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-cream: #12100e00; /* unused in app; keep transparent */
+  --color-ring: rgba(200, 212, 212, 0.4);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 40px -18px rgb(0 0 0 / 0.6);
+  --shadow-float: 0 2px 6px rgb(0 0 0 / 0.35), 0 28px 64px -24px rgb(0 0 0 / 0.7);
+  /* status text: lightened for AA on the dark surface */
+  --status-excellent: #6fa992;
+  --status-good: #8fb3a2;
+  --status-fair: #cbad74;
+  --status-attention: #d99e7f;
+  color-scheme: dark;
+}
+
+/* app shell base surface + light-app text tuning.
+   Muted text is darkened vs the marketing tokens so it clears WCAG AA on the
+   app's raised surfaces (surface-2). Scoped to .app-theme → marketing untouched.
+   The dark block above overrides where it needs lighter values. */
+.app-theme {
+  --color-body: #5c6570;
+  --color-faint: #626b76;
+  --sage-accent: #465857; /* sage-tint chip text/icons (light) */
+  --danger-text: #c73338;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+/* app reusable component classes (token-driven → theme-aware) */
+@layer components {
+  .app-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-card);
+  }
+  .app-input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    padding: 0.75rem 1rem;
+    font-size: 15px;
+    outline: none;
+    transition:
+      border-color 0.18s var(--ease-smooth),
+      box-shadow 0.18s var(--ease-smooth);
+  }
+  .app-input::placeholder {
+    color: var(--color-faint);
+  }
+  .app-input:focus {
+    border-color: var(--color-sage-mid);
+    box-shadow: 0 0 0 3px var(--color-ring);
+  }
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 0.75rem;
+    color: var(--color-body);
+    transition:
+      background 0.15s,
+      color 0.15s;
+  }
+  .icon-btn:hover {
+    background: var(--color-surface-2);
+    color: var(--color-ink);
+  }
+}
+
+/* face-scan sweep line */
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-2%);
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(102%);
+    opacity: 0;
+  }
+}
+.scan-line {
+  animation: scan-sweep 2.4s var(--ease-smooth) infinite;
+}
+
+/* loading skeleton */
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+.skeleton {
+  background: var(--color-surface-2);
+  border-radius: 0.5rem;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
 /* ── base ─────────────────────────────────────────────────────── */
@@ -164,7 +296,10 @@
   }
   .btn-dark {
     background: var(--color-ink);
-    color: #fff;
+    /* canvas (not #fff) so the primary button inverts correctly in the app
+       dark theme: light bg + dark text. On the light marketing site canvas
+       is near-white, so this is visually identical there. */
+    color: var(--color-canvas);
     box-shadow: var(--shadow-mid);
   }
   .btn-dark:hover {

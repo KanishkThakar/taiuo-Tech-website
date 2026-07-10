@@ -10,6 +10,7 @@ import {
   btnPrimary,
   inputCls,
 } from "@/components/product/shell";
+import { AuthDivider, OAuthButtons } from "@/components/product/oauth";
 import { getSupabase } from "@/lib/supabase";
 
 export default function SignupPage() {
@@ -62,7 +63,12 @@ export default function SignupPage() {
           Start your personalized facial analysis in minutes.
         </p>
 
-        <form onSubmit={onSubmit} className="mt-7 grid gap-4">
+        <div className="mt-7">
+          <OAuthButtons onError={(m) => setError(m || null)} />
+        </div>
+        <AuthDivider />
+
+        <form onSubmit={onSubmit} className="grid gap-4">
           <Field label="Full name">
             <input
               type="text"
