@@ -1,6 +1,5 @@
-import { DesignSite } from "@/components/brand/DesignSite";
-import { directions } from "@/lib/directions";
+import { EditorialSite } from "@/components/brand/EditorialSite";
 
 export default function Home() {
-  return <DesignSite direction={directions[2]} />;
+  return <EditorialSite />;
 }

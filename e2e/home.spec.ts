@@ -7,10 +7,10 @@ test("homepage renders the brand story and real photographs", async ({ page }) =
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
   await expect(page).toHaveTitle(/Taiuo.*Intelligent beauty/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Know more.Guess less.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Beauty beginswith you.");
   for (const id of ["how", "experience", "discovery", "philosophy", "intelligence", "faq"])
     await expect(page.locator(`#${id}`)).toBeAttached();
-  await expect(page.locator(".lab-stage .skin-object")).toBeVisible();
+  await expect(page.locator(".editorial-hero-still")).toBeAttached();
   await page.locator(".hero-photograph img").scrollIntoViewIfNeeded();
   await expect(page.locator(".hero-photograph img")).toBeVisible();
   await expect
@@ -96,7 +96,7 @@ test("axe: no serious or critical accessibility violations", async ({ page }) =>
   expect(
     results.violations
       .filter((v) => ["serious", "critical"].includes(v.impact ?? ""))
-      .map((v) => `${v.id}: ${v.nodes.length}`),
+      .map((v) => `${v.id}: ${v.nodes.map((node) => node.target.join(" ")).join(", ")}`),
   ).toEqual([]);
 });
 
