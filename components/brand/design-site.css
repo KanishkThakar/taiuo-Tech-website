@@ -2043,3 +2043,17 @@
     transform: none;
   }
 }
+@media (max-width: 760px) {
+  .neue-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .design-site .neue-hero h1 {
+    font-size: clamp(53px, 14vw, 78px);
+  }
+  .neue-cells {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .neue-cells b {
+    font-size: 10px;
+  }
+}

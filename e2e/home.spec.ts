@@ -101,6 +101,7 @@ test("axe: no serious or critical accessibility violations", async ({ page }) =>
 });
 
 test("design studio exposes all 12 full-page directions and device controls", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/directions");
   const choices = page.getByRole("navigation", { name: "Design directions" }).getByRole("button");
   await expect(choices).toHaveCount(12);
