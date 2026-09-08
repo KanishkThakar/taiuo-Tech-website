@@ -1,101 +1,136 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
-
-/* reduced-motion renders all reveals instantly — deterministic assertions */
 test.use({ contextOptions: { reducedMotion: "reduce" } });
 
-test("homepage renders every section with no console errors", async ({ page }) => {
+test("homepage renders the brand story and couple campaign", async ({ page }) => {
   const errors: string[] = [];
-  page.on("console", (m) => {
-    if (m.type() === "error") errors.push(m.text());
-  });
-
+  page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
-  await expect(page).toHaveTitle(/Taiuo Tech/);
-
-  // every section heading, matched by role so hidden nav links can't collide
-  for (const heading of [
-    "Improve your looks",
-    "Life-changing",
-    "Studies show your looks influence",
-    "A new way to",
-    "Your complete",
-    "dermatologists",
-    "Taking into",
-    "You will",
-    "How it works",
-    "What could cost you",
-    "Frequently asked questions",
-    "Will analyzing my face",
-    "Consider this",
-  ]) {
-    const el = page.getByRole("heading", { name: new RegExp(heading, "i") }).first();
-    // below-fold sections use content-visibility:auto — bring into view first
-    await el.scrollIntoViewIfNeeded();
-    await expect(el, heading).toBeVisible();
-  }
-  await expect(page.getByText("As Seen In")).toBeVisible();
-
+  await expect(page).toHaveTitle(/Taiuo.*Intelligent beauty/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Beauty beginswith you.");
+  for (const id of ["how", "experience", "discovery", "philosophy", "intelligence", "faq"])
+    await expect(page.locator(`#${id}`)).toBeAttached();
+  await expect(page.locator(".editorial-hero-portrait img")).toHaveAttribute(
+    "alt",
+    /woman and man together/,
+  );
+  await page.locator(".editorial-hero-portrait img").scrollIntoViewIfNeeded();
+  await expect(page.locator(".editorial-hero-portrait img")).toBeVisible();
+  await expect
+    .poll(() =>
+      page
+        .locator(".editorial-hero-portrait img")
+        .evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0),
+    )
+    .toBe(true);
   expect(errors).toEqual([]);
 });
 
-test("stats tabs switch and re-render the evidence cards", async ({ page }) => {
+test("experience supports tabs, keyboard navigation and morning/evening routines", async ({
+  page,
+}) => {
   await page.goto("/");
-  await page.getByRole("tab", { name: "Dating" }).click();
-  await expect(page.getByText("More matches", { exact: true })).toBeVisible();
-  await expect(page.getByText("Tyson et al., 2016")).toBeVisible();
-  await page.getByRole("tab", { name: "Happiness" }).click();
-  await expect(page.getByText("Life satisfaction", { exact: true })).toBeVisible();
+  await page.getByRole("tab", { name: "Your daily ritual" }).click();
+  await expect(page.getByRole("tabpanel").getByText("Protect", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Evening", exact: true }).click();
+  await expect(page.getByText("Your evening care step")).toBeVisible();
+  await expect(page.getByRole("tabpanel").getByText("Protect", { exact: true })).toHaveCount(0);
+  await page.getByRole("tab", { name: "Your daily ritual" }).focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("tab", { name: "Your progress" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(page.getByText("Your skin journal.")).toBeVisible();
+  await page.keyboard.press("Home");
+  await expect(page.getByRole("tab", { name: "Your skin read" })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
 });
 
-test("FAQ accordion is single-open and switches categories", async ({ page }) => {
+test("FAQ opens one answer at a time", async ({ page }) => {
   await page.goto("/");
-  const faq = page.locator("#faq");
-  await faq.scrollIntoViewIfNeeded();
-
-  // first item open by default; opening another closes it
-  await expect(faq.getByText("Taiuo is the world's best platform")).toBeVisible();
-  await faq.getByRole("button", { name: "Who is this for?" }).click();
-  await expect(faq.getByText("Taiuo is for anyone")).toBeVisible();
-  await expect(faq.getByText("Taiuo is the world's best platform")).toBeHidden();
-
-  // category switch
-  await faq.getByRole("tab", { name: "Privacy" }).click();
-  await expect(faq.getByRole("button", { name: "Is my data private?" })).toBeVisible();
+  await page.locator("#faq summary").nth(0).click();
+  await expect(page.locator("#faq details[open]")).toHaveCount(1);
+  await page.locator("#faq summary").nth(1).click();
+  await expect(page.locator("#faq details[open]")).toHaveCount(1);
+  await expect(page.locator("#faq details[open]")).toContainText("without creating an account");
 });
 
-test("primary CTAs route into the product flow", async ({ page }) => {
+test("conversion and policy links lead to the actual Taiuo app", async ({ page }) => {
   await page.goto("/");
-  const cta = page.getByRole("link", { name: "Start my plan" }).first();
-  await expect(cta).toBeVisible();
-  await cta.scrollIntoViewIfNeeded();
-  // The CTA is a client <Link>; a click landing mid-hydration can be dropped
-  // (handler attached, router not yet ready). Re-click while still on the home
-  // page until the route actually changes. Onboarding is auth-gated, so an
-  // unauthenticated visitor lands on onboarding and is bounced to login — both
-  // count as entering the product flow.
-  await expect(async () => {
-    if (new URL(page.url()).pathname === "/") await cta.click();
-    await page.waitForURL(/\/(onboarding|login)/, { timeout: 2500 });
-  }).toPass({ timeout: 20_000, intervals: [400, 900, 1800] });
+  for (const link of await page.getByRole("link", { name: "Discover my skin", exact: true }).all())
+    await expect(link).toHaveAttribute("href", "https://taiuo.com/scan");
+  await expect(page.getByRole("link", { name: "Privacy", exact: true })).toHaveAttribute(
+    "href",
+    "https://taiuo.com/privacy",
+  );
+  await expect(page.getByRole("link", { name: "Terms", exact: true })).toHaveAttribute(
+    "href",
+    "https://taiuo.com/terms",
+  );
 });
 
-test("mobile menu opens, closes on Escape, locks scroll", async ({ page }) => {
+test("mobile menu closes with Escape and an anchor selection", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await page.getByRole("button", { name: "Open menu" }).click();
   await expect(page.getByRole("navigation", { name: "Mobile" })).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(page.getByRole("navigation", { name: "Mobile" })).toBeHidden();
+  await expect(page.getByRole("navigation", { name: "Mobile" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Open menu" })).toBeFocused();
+  await page.getByRole("button", { name: "Open menu" }).click();
+  await page
+    .getByRole("navigation", { name: "Mobile" })
+    .getByRole("link", { name: "The experience" })
+    .click();
+  await expect(page.getByRole("navigation", { name: "Mobile" })).toHaveCount(0);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
 });
 
-test("axe: no serious or critical a11y violations", async ({ page }) => {
+test("axe: no serious or critical accessibility violations", async ({ page }) => {
   await page.goto("/");
-  // let the hero entrance settle — axe samples blended colors mid-fade otherwise
-  await page.waitForTimeout(2500);
   const results = await new AxeBuilder({ page }).analyze();
-  const blocking = results.violations.filter((v) =>
-    ["serious", "critical"].includes(v.impact ?? ""),
+  expect(
+    results.violations
+      .filter((v) => ["serious", "critical"].includes(v.impact ?? ""))
+      .map((v) => `${v.id}: ${v.nodes.map((node) => node.target.join(" ")).join(", ")}`),
+  ).toEqual([]);
+});
+
+test("design studio exposes all 12 full-page directions and device controls", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/directions");
+  const choices = page.getByRole("navigation", { name: "Design directions" }).getByRole("button");
+  await expect(choices).toHaveCount(12);
+  await choices.nth(11).click();
+  await expect(page.locator("iframe")).toHaveAttribute("src", "/directions/12");
+  await expect(page.frameLocator("iframe").getByRole("heading", { level: 1 })).toHaveText(
+    "Skin.Understood.",
   );
-  expect(blocking.map((v) => `${v.id}: ${v.help} (${v.nodes.length} nodes)`)).toEqual([]);
+  await page.getByRole("button", { name: "Mobile preview" }).click();
+  await expect(page.locator(".review-stage")).toHaveClass(/review-mobile/);
+  await page.getByRole("button", { name: "Next direction" }).click();
+  await expect(page.locator("iframe")).toHaveAttribute("src", "/directions/01");
+});
+
+test("product, scent and model evidence copy preserve their claim boundaries", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: "Explore skincare" })).toHaveAttribute(
+    "href",
+    "https://taiuo.com/products",
+  );
+  await expect(page.getByRole("link", { name: "Explore fragrance" })).toHaveAttribute(
+    "href",
+    "https://taiuo.com/fragrance",
+  );
+  await page.locator(".evidence-details summary").click();
+  await expect(page.locator(".evidence-details")).toContainText("25 synthetic faces");
+  await expect(page.locator(".evidence-details")).toContainText("not skin-condition detection");
+  await expect(page.locator(".discovery-scent")).toContainText("scent preferences come from you");
 });

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -10,6 +10,13 @@ import { SITE_URL } from "@/lib/site";
 // fail the build (not the user) on malformed environment configuration
 validateEnv();
 
+const display = Cormorant_Garamond({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -23,31 +30,30 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Taiuo Tech - Improve Your Looks Without Surgery",
-    template: "%s · Taiuo Tech",
+    default: "Taiuo — Intelligent beauty. Real you.",
+    template: "%s · Taiuo",
   },
   description:
-    "Get your personalized facial analysis and transformation plan based on your unique features. 160+ beauty markers, 450+ evidence-based methods — no surgery needed.",
+    "Know more. Guess less. Discover personal skin insights, scan-informed skincare picks, daily routines and fragrance discovery. Start your first scan free.",
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Taiuo Tech - Improve Your Looks Without Surgery",
+    title: "Taiuo — Intelligent beauty. Real you.",
     description:
-      "Personalized facial analysis and transformation plan based on your unique features. Science-based. Non-surgical.",
+      "Personal skin insights, considered skincare picks and fragrance discovery. Beauty, on your terms.",
     type: "website",
-    siteName: "Taiuo Tech",
+    siteName: "Taiuo",
     url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Taiuo Tech - Improve Your Looks Without Surgery",
-    description:
-      "Personalized facial analysis and transformation plan based on your unique features.",
+    title: "Taiuo — Intelligent beauty. Real you.",
+    description: "Personal skin insights. Thoughtful daily routines. A little more you.",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#A8B5B5",
+  themeColor: "#F7F4EE",
   width: "device-width",
   initialScale: 1,
 };
@@ -58,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${display.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
         {/* platform scripts only exist on Vercel — skip locally so the console stays clean */}
