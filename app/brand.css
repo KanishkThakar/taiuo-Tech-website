@@ -3,7 +3,7 @@
   --brand-ink: #25231e;
   --brand-muted: #6c685f;
   --brand-line: #ded8cc;
-  --brand-gold: #8a704b;
+  --brand-gold: #79603c;
   background: var(--brand-bg);
   color: var(--brand-ink);
   font-family: var(--font-inter), sans-serif;
@@ -60,7 +60,7 @@
   display: inline-block;
   width: 5px;
   height: 5px;
-  background: #8a704b;
+  background: #79603c;
   border-radius: 50%;
   vertical-align: middle;
   margin: 0 8px 2px 0;
@@ -200,7 +200,7 @@
   font-size: 8px;
   letter-spacing: 0.17em;
   line-height: 1.8;
-  color: #777063;
+  color: #6c6457;
 }
 .signoff-line {
   display: block;
@@ -285,7 +285,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #89795e;
+  color: #736247;
   font-size: 10px;
   letter-spacing: 0.08em;
   margin-bottom: 33px;
@@ -401,12 +401,12 @@
   font-family: var(--font-inter), sans-serif;
   font-size: 10px;
   letter-spacing: 0;
-  color: #7b7468;
+  color: #6e665a;
   margin-left: 8px;
 }
 .sample-score > span:last-of-type {
   font-size: 9px;
-  color: #7b7468;
+  color: #6e665a;
   margin-top: 8px;
 }
 .sample-score-rule {
@@ -459,7 +459,7 @@
 }
 .preview-caption {
   font-size: 9px;
-  color: #71695c;
+  color: #665e51;
   text-align: center;
   margin-top: 17px;
 }
@@ -529,7 +529,7 @@
 }
 .journal-summary p {
   font-size: 10px;
-  color: #71695c;
+  color: #665e51;
 }
 .journal-summary strong {
   font-weight: 500;
@@ -546,7 +546,7 @@
 }
 .journal-list > div > span {
   font-size: 8px;
-  color: #71695c;
+  color: #665e51;
 }
 .journal-list h4 {
   font-weight: 400;
@@ -593,7 +593,7 @@
   font-style: italic;
   font-size: 21px;
   line-height: 1.3;
-  color: #897655;
+  color: #756143;
   margin-top: 40px;
 }
 .brand-faq {
@@ -625,7 +625,7 @@
 }
 .faq-number {
   font-size: 9px;
-  color: #82745c;
+  color: #726248;
 }
 .faq-plus {
   font-size: 22px;
