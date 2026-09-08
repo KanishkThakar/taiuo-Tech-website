@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { BrandNav, ProductPreview } from "./Experience";
 import { ModelEvidence } from "./ModelEvidence";
-import { APP_URL, BRAND_FAQ } from "@/lib/brand";
+import { APP_URL, BRAND_FAQ, BRAND_PORTAL_ENABLED } from "@/lib/brand";
 import "@/app/brand.css";
 import "./editorial-site.css";
 
@@ -325,12 +325,14 @@ export function EditorialSite() {
           <a href="#intelligence">Our intelligence</a>
           <a href="#faq">Questions</a>
           <a href={`${APP_URL}/login`}>Sign in</a>
+          {BRAND_PORTAL_ENABLED && <a href={`${APP_URL}/studio`}>For brands</a>}
         </nav>
         <nav aria-label="Legal">
           <span>THE DETAILS</span>
           <a href={`${APP_URL}/privacy`}>Privacy</a>
           <a href={`${APP_URL}/terms`}>Terms</a>
           <a href="/image-credits">Photography credits</a>
+          {BRAND_PORTAL_ENABLED && <a href={`${APP_URL}/ad-library`}>Ad transparency</a>}
         </nav>
         <p className="editorial-colophon">
           © {new Date().getFullYear()} Taiuo. Lifestyle insights, not a medical diagnosis. Editorial
