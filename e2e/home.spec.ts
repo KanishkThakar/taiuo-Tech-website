@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 test.use({ contextOptions: { reducedMotion: "reduce" } });
 
-test("homepage renders the brand story and real photographs", async ({ page }) => {
+test("homepage renders the brand story and couple campaign", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
@@ -10,13 +10,16 @@ test("homepage renders the brand story and real photographs", async ({ page }) =
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Beauty beginswith you.");
   for (const id of ["how", "experience", "discovery", "philosophy", "intelligence", "faq"])
     await expect(page.locator(`#${id}`)).toBeAttached();
-  await expect(page.locator(".editorial-hero-still")).toBeAttached();
-  await page.locator(".hero-photograph img").scrollIntoViewIfNeeded();
-  await expect(page.locator(".hero-photograph img")).toBeVisible();
+  await expect(page.locator(".editorial-hero-portrait img")).toHaveAttribute(
+    "alt",
+    /woman and man together/,
+  );
+  await page.locator(".editorial-hero-portrait img").scrollIntoViewIfNeeded();
+  await expect(page.locator(".editorial-hero-portrait img")).toBeVisible();
   await expect
     .poll(() =>
       page
-        .locator(".hero-photograph img")
+        .locator(".editorial-hero-portrait img")
         .evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0),
     )
     .toBe(true);

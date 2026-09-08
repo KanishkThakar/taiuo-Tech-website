@@ -65,13 +65,19 @@
 }
 .editorial-hero {
   display: grid;
-  grid-template-columns: 34% 38% 28%;
+  position: relative;
+  grid-template-columns: 1fr;
+  isolation: isolate;
+  aspect-ratio: 2.4;
   max-width: 1600px;
   margin: auto;
-  min-height: 580px;
+  min-height: 540px;
 }
 .editorial-hero-copy {
-  padding: 90px 20px 62px max(48px, calc((100vw - 1344px) / 2));
+  position: relative;
+  z-index: 1;
+  width: 43%;
+  padding: 60px 20px 62px max(48px, calc((100vw - 1344px) / 2));
   align-self: center;
 }
 .editorial-hero h1 {
@@ -108,54 +114,15 @@
   margin-top: 17px;
 }
 .editorial-hero-portrait {
-  position: relative;
-  min-height: 580px;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
   background: #c2b5a4;
 }
 .editorial-hero-portrait img {
   object-fit: cover;
-  object-position: 50% 36%;
-}
-.editorial-hero-portrait figcaption {
-  position: absolute;
-  bottom: 20px;
-  left: 22px;
-  color: white;
-  font-size: 8px;
-  letter-spacing: 0.17em;
-  background: #29251e;
-  padding: 8px 12px;
-}
-.editorial-hero-still {
-  position: relative;
-  overflow: hidden;
-  background: #bfa587;
-}
-.editorial-hero-still img {
-  object-fit: cover;
-  object-position: 50% 70%;
-}
-.editorial-hero-still > div {
-  position: relative;
-  z-index: 1;
-  margin: 40px 25px;
-  background: #f7f4eef5;
-  padding: 20px 23px;
-  width: fit-content;
-}
-.editorial-hero-still h2 {
-  font-size: 29px;
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-}
-.editorial-hero-still a {
-  font-size: 8px;
-  letter-spacing: 0.08em;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-top: 22px;
+  object-position: 50% 50%;
 }
 .editorial-principles {
   max-width: 1440px;
@@ -668,21 +635,15 @@
     gap: 15px;
   }
   .editorial-hero {
-    grid-template-columns: 42% 35% 23%;
+    grid-template-columns: 1fr;
     min-height: 510px;
   }
   .editorial-hero-copy {
     padding-left: 30px;
   }
-  .editorial-hero-portrait {
-    min-height: 510px;
-  }
-  .editorial-hero-still > div {
-    margin: 20px 10px;
-    padding: 15px;
-  }
-  .editorial-hero-still h2 {
-    font-size: 25px;
+  .editorial-hero-copy {
+    width: 46%;
+    background: linear-gradient(90deg, #f2e9dbdd, #f2e9db00);
   }
   .editorial-principles {
     padding-inline: 30px;
@@ -738,10 +699,13 @@
     display: none;
   }
   .editorial-hero {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    aspect-ratio: auto;
   }
   .editorial-hero-copy {
     grid-column: 1/-1;
+    width: 100%;
+    background: var(--paper);
     padding: 36px 24px 30px;
   }
   .editorial-hero h1 {
@@ -757,19 +721,12 @@
     margin-bottom: 22px;
   }
   .editorial-hero-portrait {
+    position: relative;
     min-height: 350px;
     grid-column: 1/-1;
   }
   .editorial-hero-portrait img {
-    object-position: 50% 32%;
-  }
-  .editorial-hero-still {
-    display: none;
-  }
-  .editorial-hero-portrait figcaption {
-    left: 20px;
-    bottom: 15px;
-    font-size: 7px;
+    object-position: 59% 50%;
   }
   .editorial-fine {
     font-size: 8px;

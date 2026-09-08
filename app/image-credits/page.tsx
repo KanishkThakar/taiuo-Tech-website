@@ -11,6 +11,11 @@ export default function ImageCredits() {
           ← Back to Taiuo
         </Link>
         <h1 style={{ fontSize: 56, margin: "30px 0 20px" }}>Photography credits.</h1>
+        <p style={{ fontSize: 14, lineHeight: 1.8, marginBottom: 20 }}>
+          The homepage couple campaign is AI-generated artwork, created for Taiuo from an
+          art-direction reference. Its models and unbranded bottle are illustrative, not customer
+          photographs or products available to buy.
+        </p>
         <p style={{ fontSize: 14, lineHeight: 1.8 }}>
           Our editorial photography is sourced from the photographers below under the{" "}
           <a href="https://www.pexels.com/license/" style={{ textDecoration: "underline" }}>

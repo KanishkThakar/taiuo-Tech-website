@@ -95,34 +95,15 @@ export function EditorialSite() {
             <Action />
             <p className="editorial-fine">First scan free · No sign-up needed · 18+</p>
           </div>
-          <figure className="editorial-hero-portrait hero-photograph">
-            <Photo
-              src="editorial-man"
-              alt="A man with dark wavy hair wearing a warm neutral shirt"
-              priority
-              sizes="(max-width: 760px) 100vw, 40vw"
+          <figure className="editorial-hero-portrait">
+            <Image
+              src="/images/taiuo-couple-hero.png"
+              alt="Campaign artwork of a woman and man together in ivory linen, with warm window light"
+              fill
+              preload
+              sizes="(max-width: 760px) 1100px, (max-width: 1100px) 1500px, 100vw"
             />
-            <figcaption>YOUR SKIN. NO STANDARD TO FIT.</figcaption>
           </figure>
-          <div className="editorial-hero-still">
-            <Photo
-              src="editorial-skincare"
-              alt="Amber glass skincare bottle and ceramic vase in soft light"
-              sizes="(max-width: 760px) 1px, 28vw"
-            />
-            <div>
-              <h2>
-                Thoughtful care.
-                <br />
-                Personal choices.
-                <br />
-                Every day.
-              </h2>
-              <a href="#discovery">
-                THE PERSONAL EDIT <ArrowRight size={15} />
-              </a>
-            </div>
-          </div>
         </section>
 
         <div className="editorial-principles">
