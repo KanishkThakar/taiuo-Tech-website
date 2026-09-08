@@ -24,4 +24,16 @@ export const BRAND_FAQ = [
     q: "How should I use my score?",
     a: "Treat it as one reference point in your skin journal, not a beauty rating. Look at your insights alongside your routine and how your skin feels. A photo-based score is an estimate and can vary with capture conditions.",
   },
+  {
+    q: "Are product recommendations based on my scan?",
+    a: "Taiuo uses available skin insights, your concerns and routine categories to suggest relevant catalog products. The picks help you explore options; a match is not a guarantee of results or a substitute for clinical advice.",
+  },
+  {
+    q: "How does fragrance discovery work?",
+    a: "Fragrance discovery starts with your stated taste, occasion and budget. After a completed scan, aesthetic scent suggestions may offer styling inspiration when the catalog is available. Your face does not tell us what scents you like.",
+  },
+  {
+    q: "How accurate is the model?",
+    a: "Accuracy depends on the task and capture conditions. We publish component evaluation notes rather than one overall accuracy percentage. The internal capture-quality benchmark is not a clinical validation of skin analysis, product effectiveness or fragrance preference. Read the evaluation notes above for the test setup and limits.",
+  },
 ];

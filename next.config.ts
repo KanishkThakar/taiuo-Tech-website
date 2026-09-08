@@ -43,7 +43,21 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   async headers() {
-    return [{ source: "/(.*)", headers: SECURITY_HEADERS }];
+    return [
+      { source: "/(.*)", headers: SECURITY_HEADERS },
+      // The review studio embeds only same-origin design previews.
+      // Public product/account routes retain their no-framing policy.
+      {
+        source: "/directions/:id",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: CSP.replace("frame-ancestors 'none'", "frame-ancestors 'self'"),
+          },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      },
+    ];
   },
 };
 

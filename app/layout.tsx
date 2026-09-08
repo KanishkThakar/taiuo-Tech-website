@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     template: "%s · Taiuo",
   },
   description:
-    "Less guesswork. More you. Discover personal skin insights, a daily routine that fits, and a clearer picture of your progress. Start your first scan free.",
+    "Know more. Guess less. Discover personal skin insights, scan-informed skincare picks, daily routines and fragrance discovery. Start your first scan free.",
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
   openGraph: {
     title: "Taiuo — Intelligent beauty. Real you.",
     description:
-      "Your skin has a story. Get to know it with personal insights, everyday routines and progress tracking.",
+      "Personal skin insights, considered skincare picks and fragrance discovery. Beauty, on your terms.",
     type: "website",
     siteName: "Taiuo",
     url: SITE_URL,

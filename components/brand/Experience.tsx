@@ -27,7 +27,8 @@ export function BrandNav() {
   const items = [
     ["The approach", "#how"],
     ["The experience", "#experience"],
-    ["Our philosophy", "#philosophy"],
+    ["Discover", "#discovery"],
+    ["Our intelligence", "#intelligence"],
   ];
   return (
     <header className="brand-header">
