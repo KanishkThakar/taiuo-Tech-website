@@ -1,4 +1,6 @@
 export const APP_URL = "https://taiuo.com";
+// Enable after the member application and brand-library migration are live.
+export const BRAND_PORTAL_ENABLED = process.env.NEXT_PUBLIC_BRAND_PORTAL_ENABLED === "true";
 export const BRAND_FAQ = [
   {
     q: "What does Taiuo do?",
