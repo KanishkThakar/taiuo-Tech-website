@@ -167,6 +167,9 @@ for (const option of ["a", "b"] as const) {
       const bounds = await page.locator(".tech-hero").boundingBox();
       expect(bounds!.width).toBeLessThanOrEqual(width);
       expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(
+        await page.locator(".tech-hero h1").evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+      ).toBe(true);
     }
     const results = await new AxeBuilder({ page }).analyze();
     expect(

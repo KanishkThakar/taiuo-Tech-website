@@ -411,11 +411,13 @@
   gap: 0;
 }
 .tech-positioning .couple-hero .editorial-hero-copy {
-  width: 44%;
+  width: 40%;
   padding: 50px 20px 50px max(48px, calc((100vw - 1344px) / 2));
 }
 .tech-positioning .couple-hero h1 {
   font-size: clamp(46px, 4.3vw, 66px);
+  white-space: normal;
+  max-width: 440px;
 }
 .tech-positioning .couple-hero h1 em {
   color: #514d40;
@@ -443,8 +445,11 @@
   }
 }
 @media (min-width: 761px) and (max-width: 1100px) {
+  .tech-positioning .couple-hero {
+    min-height: 560px;
+  }
   .tech-positioning .couple-hero .editorial-hero-copy {
-    width: 45%;
+    width: 40%;
     padding: 40px 20px 40px 30px;
   }
   .tech-positioning .couple-hero h1 {
