@@ -22,7 +22,7 @@ Taiuo builds the platform. Recommendations support the experience; a skincare or
 6. Supporting recommendations: skincare and fragrance appear after the platform journey and evidence. No shopping CTA in the hero. Fragrance preferences come from the user, not a facial diagnosis.
 7. FAQ and final scan invitation. No forced purchase, invented testimonials or artificial before/after results.
 
-The premium cream, serif wordmark and restrained typography remain. Interface examples replace the full-width campaign photo and the early bottle/category grid. The two repositories use the same narrative; integrated app links stay on their origin, standalone website links open taiuo.com.
+Both review options retain the premium cream palette and serif wordmark. Option A pairs the approved couple campaign with the beauty-tech headline; Option B leads with an illustrative platform preview. Interactive interface examples sit below both heroes, ahead of optional recommendations. The early bottle/category grid stays removed. The two repositories use the same narrative; integrated app links stay on their origin, standalone website links open taiuo.com.
 
 ## Approved copy by channel
 
@@ -126,3 +126,7 @@ Track landing-to-scan starts, completed scans, report views, saved check-ins and
 ## Release status boundaries
 
 This change implements the homepage narrative, interface illustration, metadata, share image and content kit. It does not publish social posts, change external social profiles, send outreach, record a real user's story or certify production operations. Those require account access, actual captures and permissioned participants.
+
+## Homepage review options
+
+Public `/review/a` preserves the approved couple campaign with the beauty-tech message. `/review/b` uses the illustrative scan and insights interface. Both use identical positioning and consumer-friendly technology copy; internal component evaluation details remain in research documentation. These pages are excluded from search indexing. The root homepage keeps the platform hero pending stakeholder approval. No final visual direction has been selected.

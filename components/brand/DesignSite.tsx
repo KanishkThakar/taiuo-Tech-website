@@ -62,7 +62,7 @@ function Intro({ d }: { d: Direction }) {
         Your kind of beauty, all in one place.
       </p>
       <Action />
-      <p className="design-fine">First scan free · No sign-up needed · 18+</p>
+      <p className="design-fine">Free skin analysis · No sign-up needed · 18+</p>
     </div>
   );
 }
@@ -543,7 +543,7 @@ export function DesignSite({ direction }: { direction: Direction }) {
             <em>personal.</em>
           </h2>
           <Action />
-          <p>First scan free. No sign-up needed. 18+</p>
+          <p>Free skin analysis. No sign-up needed. 18+</p>
         </section>
       </main>
       <footer className="design-footer">
