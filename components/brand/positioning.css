@@ -119,9 +119,9 @@
 }
 .platform-overline {
   display: block;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.08em;
-  color: #746c5d;
+  color: #5c574c;
   line-height: 1.5;
 }
 .platform-insights {
