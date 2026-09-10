@@ -30,25 +30,26 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Taiuo — Intelligent beauty. Real you.",
+    default: "Taiuo — Understand your skin",
     template: "%s · Taiuo",
   },
   description:
-    "Know more. Guess less. Discover personal skin insights, scan-informed skincare picks, daily routines and fragrance discovery. Start your first scan free.",
+    "Taiuo is an AI-powered beauty tech platform that helps you explore your skin, build a more informed care routine, and track visible changes over time.",
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Taiuo — Intelligent beauty. Real you.",
+    title: "Taiuo — Understand your skin",
     description:
-      "Personal skin insights, considered skincare picks and fragrance discovery. Beauty, on your terms.",
+      "Taiuo is an AI-powered beauty tech platform that helps you explore your skin, build a more informed care routine, and track visible changes over time.",
     type: "website",
     siteName: "Taiuo",
     url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Taiuo — Intelligent beauty. Real you.",
-    description: "Personal skin insights. Thoughtful daily routines. A little more you.",
+    title: "Taiuo — Understand your skin",
+    description:
+      "Taiuo is an AI-powered beauty tech platform that helps you explore your skin, build a more informed care routine, and track visible changes over time.",
   },
 };
 
