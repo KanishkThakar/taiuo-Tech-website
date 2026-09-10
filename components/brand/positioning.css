@@ -468,6 +468,7 @@
   }
   .tech-positioning .couple-hero h1 {
     font-size: clamp(42px, 10.8vw, 60px);
+    max-width: none;
   }
   .tech-positioning .couple-hero .editorial-hero-portrait {
     position: relative;
