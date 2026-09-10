@@ -13,8 +13,8 @@ export const BRAND_FAQ = [
     a: "No. Skin insights, routine planning and scan history are the core experience. You can also review products you already own through Check your shelf. Catalog recommendations are optional, and pictured products are not a Taiuo product line.",
   },
   {
-    q: "Is my first scan really free?",
-    a: "Yes. Start your first scan on taiuo.com for free, without creating an account. Taiuo is for adults aged 18 and over.",
+    q: "Is skin analysis free?",
+    a: "Yes. Skin analysis on Taiuo is free. You can start a scan without creating an account. Taiuo is for adults aged 18 and over.",
   },
   {
     q: "What makes a good scan?",
@@ -42,6 +42,6 @@ export const BRAND_FAQ = [
   },
   {
     q: "How accurate is the model?",
-    a: "Accuracy depends on the task and capture conditions. We publish component evaluation notes rather than one overall accuracy percentage. The internal capture-quality benchmark is not a clinical validation of skin analysis, product effectiveness or fragrance preference. Read the evaluation notes above for the test setup and limits.",
+    a: "Results are photo-based estimates and can vary with lighting, camera quality and products on your skin. Use them as guidance for understanding your routine, not as a diagnosis.",
   },
 ];

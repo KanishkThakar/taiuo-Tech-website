@@ -141,10 +141,43 @@ test("product, scent and model evidence copy preserve their claim boundaries", a
     "href",
     "https://taiuo.com/fragrance",
   );
-  await page.locator(".evidence-details summary").click();
-  await expect(page.locator(".evidence-details")).toContainText("25 synthetic faces");
-  await expect(page.locator(".evidence-details")).toContainText("not skin-condition detection");
+  await expect(page.locator("#intelligence")).toContainText("not a medical diagnosis");
+  await expect(page.locator("#intelligence")).not.toContainText("94.8%");
   await expect(page.locator(".tech-support-grid")).toContainText(
     "stated taste, occasion and budget",
   );
 });
+
+for (const option of ["a", "b"] as const) {
+  test(`public review option ${option} preserves navigation, hero framing and accessibility`, async ({
+    page,
+  }) => {
+    await page.goto(`/review/${option}`);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    const nav = page.getByRole("navigation", { name: "Homepage design options" });
+    await expect(nav.getByRole("link", { name: `Option ${option.toUpperCase()}` })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    await expect(
+      page.locator(option === "a" ? ".editorial-hero-portrait img" : ".skin-platform-preview"),
+    ).toBeVisible();
+    for (const width of [390, 887, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      const bounds = await page.locator(".tech-hero").boundingBox();
+      expect(bounds!.width).toBeLessThanOrEqual(width);
+      expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(
+        await page.locator(".tech-hero h1").evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+      ).toBe(true);
+    }
+    const results = await new AxeBuilder({ page }).analyze();
+    expect(
+      results.violations
+        .filter((v) => ["serious", "critical"].includes(v.impact ?? ""))
+        .map((v) => v.id),
+    ).toEqual([]);
+    await nav.getByRole("link", { name: `Option ${option === "a" ? "B" : "A"}` }).click();
+    await expect(page).toHaveURL(new RegExp(`/review/${option === "a" ? "b" : "a"}$`));
+  });
+}

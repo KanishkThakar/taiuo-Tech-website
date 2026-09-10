@@ -398,3 +398,236 @@
     grid-template-columns: 80px 1fr;
   }
 }
+
+/* Keep the approved couple campaign as the first impression. */
+.tech-positioning .couple-hero {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+  max-width: 1600px;
+  min-height: 640px;
+  aspect-ratio: 2.4;
+  padding: 0;
+  gap: 0;
+}
+.tech-positioning .couple-hero .editorial-hero-copy {
+  width: 40%;
+  padding: 50px 20px 50px max(48px, calc((100vw - 1344px) / 2));
+}
+.tech-positioning .couple-hero h1 {
+  font-size: clamp(46px, 4.3vw, 66px);
+  white-space: normal;
+  max-width: 440px;
+}
+.tech-positioning .couple-hero h1 em {
+  color: #514d40;
+}
+.tech-positioning .couple-hero .editorial-deck {
+  max-width: 420px;
+  font-size: 14px;
+  color: #38352e;
+}
+.tech-positioning .couple-hero .editorial-fine {
+  color: #514b41;
+}
+.tech-positioning .couple-hero .editorial-hero-portrait {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+}
+.tech-positioning .couple-hero .editorial-hero-portrait img {
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+@media (min-width: 1600px) {
+  .tech-positioning .couple-hero .editorial-hero-copy {
+    padding-left: 60px;
+  }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .tech-positioning .couple-hero {
+    min-height: 560px;
+  }
+  .tech-positioning .couple-hero .editorial-hero-copy {
+    width: 40%;
+    padding: 40px 20px 40px 30px;
+  }
+  .tech-positioning .couple-hero h1 {
+    font-size: 46px;
+  }
+}
+@media (max-width: 760px) {
+  .tech-positioning .couple-hero {
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .tech-positioning .couple-hero .editorial-hero-copy {
+    width: 100%;
+    padding: 32px 20px 28px;
+    background: var(--paper);
+  }
+  .tech-positioning .couple-hero h1 {
+    font-size: clamp(42px, 10.8vw, 60px);
+  }
+  .tech-positioning .couple-hero .editorial-hero-portrait {
+    position: relative;
+    inset: auto;
+    min-height: 350px;
+  }
+  .tech-positioning .couple-hero .editorial-hero-portrait img {
+    object-position: 59% 50%;
+  }
+}
+
+.homepage-review-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 24px;
+  background: #eae5dc;
+  color: #34332b;
+  font:
+    12px/1.4 Arial,
+    sans-serif;
+}
+.homepage-review-bar div {
+  display: flex;
+  gap: 6px;
+}
+.homepage-review-bar a {
+  padding: 9px 13px;
+  border-radius: 24px;
+  text-decoration: none;
+}
+.homepage-review-bar a[aria-current="page"] {
+  background: #27291f;
+  color: white;
+}
+.homepage-review-bar a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.intelligence-note {
+  text-align: center;
+  font-size: 12px;
+  color: #625d54;
+  line-height: 1.6;
+  margin: 24px 0 0;
+}
+@media (max-width: 480px) {
+  .homepage-review-bar {
+    padding: 10px 16px;
+  }
+  .homepage-review-bar > span {
+    max-width: 150px;
+  }
+}
+
+/* Shared rhythm: the copy and interface form one balanced first screen. */
+.tech-positioning .tech-hero:not(.couple-hero) {
+  width: 100%;
+  max-width: 1344px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 64px;
+  padding: 48px 48px 56px;
+  min-height: 0;
+}
+.tech-positioning .tech-hero:not(.couple-hero) .editorial-hero-copy {
+  min-width: 0;
+}
+.tech-positioning .tech-hero:not(.couple-hero) h1 {
+  max-width: 490px;
+  font-size: clamp(44px, 4.35vw, 62px);
+  line-height: 1.06;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  margin: 22px 0;
+}
+.tech-positioning .tech-hero:not(.couple-hero) .editorial-deck {
+  max-width: 420px;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.tech-positioning .tech-hero-actions {
+  gap: 8px;
+}
+.tech-positioning .tech-hero .editorial-fine {
+  margin-top: 16px;
+}
+.tech-positioning .skin-platform-preview {
+  padding: 20px;
+  border-radius: 22px;
+  box-shadow: 0 16px 45px -32px #625441;
+}
+.tech-positioning .platform-preview-top {
+  margin-bottom: 18px;
+}
+.tech-positioning .platform-capture {
+  gap: 18px;
+}
+.tech-positioning .platform-portrait {
+  min-height: 240px;
+}
+.tech-positioning .platform-followthrough > div {
+  padding: 16px;
+}
+.tech-positioning .platform-followthrough svg {
+  margin-bottom: 8px;
+}
+.tech-positioning .platform-followthrough strong {
+  margin: 6px 0;
+}
+.tech-positioning .skin-platform-preview figcaption {
+  margin-top: 12px;
+}
+@media (min-width: 761px) and (max-width: 1050px) {
+  .tech-positioning .tech-hero:not(.couple-hero) {
+    gap: 28px;
+    padding: 36px 30px 44px;
+  }
+  .tech-positioning .tech-hero:not(.couple-hero) h1 {
+    font-size: 44px;
+  }
+  .tech-positioning .platform-capture {
+    gap: 12px;
+  }
+  .tech-positioning .skin-platform-preview {
+    padding: 16px;
+  }
+  .tech-positioning .platform-insights h2 {
+    font-size: 29px;
+  }
+}
+@media (max-width: 760px) {
+  .tech-positioning .tech-hero:not(.couple-hero) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 30px;
+    padding: 32px 20px 36px;
+  }
+  .tech-positioning .tech-hero:not(.couple-hero) h1 {
+    max-width: 540px;
+    font-size: clamp(42px, 9.8vw, 58px);
+    text-wrap: balance;
+  }
+  .tech-positioning .tech-hero:not(.couple-hero) .editorial-deck {
+    font-size: 14px;
+    max-width: 460px;
+  }
+  .tech-positioning .skin-platform-preview {
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+    padding: 16px;
+  }
+  .tech-positioning .platform-capture {
+    gap: 14px;
+  }
+  .tech-positioning .platform-portrait {
+    min-height: 230px;
+  }
+  .tech-positioning .platform-followthrough > div {
+    padding: 14px 12px;
+  }
+}

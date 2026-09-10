@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowRight, ArrowUpRight, ScanFace, Layers, CalendarDays, Plus } from "lucide-react";
 import { BrandNav, ProductPreview } from "./Experience";
 import { ModelEvidence } from "./ModelEvidence";
-import { APP_URL, BRAND_FAQ, TAIUO_DESCRIPTION } from "@/lib/brand";
+import { APP_URL, BRAND_FAQ } from "@/lib/brand";
 import "@/app/brand.css";
 import "./editorial-site.css";
 import "./positioning.css";
@@ -67,13 +67,13 @@ function SkinPreview() {
         <div>
           <Layers size={19} strokeWidth={1.5} aria-hidden="true" />
           <span className="platform-overline">02 / YOUR ROUTINE</span>
-          <strong>Make sense of your next step.</strong>
+          <strong>Your everyday routine.</strong>
           <p>Morning & evening, in one place.</p>
         </div>
         <div>
           <CalendarDays size={19} strokeWidth={1.5} aria-hidden="true" />
           <span className="platform-overline">03 / YOUR PROGRESS</span>
-          <strong>A record to come back to.</strong>
+          <strong>Your skin, over time.</strong>
           <p>Compare your saved check-ins.</p>
         </div>
       </div>
@@ -82,15 +82,34 @@ function SkinPreview() {
   );
 }
 
-export function EditorialSite() {
+export function EditorialSite({
+  hero = "platform",
+  review = false,
+}: {
+  hero?: "couple" | "platform";
+  review?: boolean;
+}) {
   return (
     <div className="brand-site editorial-site tech-positioning">
       <Link className="brand-skip" href="#main">
         Skip to content
       </Link>
+      {review && (
+        <nav className="homepage-review-bar" aria-label="Homepage design options">
+          <span>Design review · {hero === "couple" ? "A / Editorial" : "B / Platform"}</span>
+          <div>
+            <Link href="/review/a" aria-current={hero === "couple" ? "page" : undefined}>
+              Option A
+            </Link>
+            <Link href="/review/b" aria-current={hero === "platform" ? "page" : undefined}>
+              Option B
+            </Link>
+          </div>
+        </nav>
+      )}
       <BrandNav />
       <main id="main">
-        <section className="editorial-hero tech-hero">
+        <section className={`editorial-hero tech-hero${hero === "couple" ? " couple-hero" : ""}`}>
           <div className="editorial-hero-copy">
             <p className="editorial-kicker">AI-POWERED BEAUTY TECHNOLOGY</p>
             <h1>
@@ -98,16 +117,31 @@ export function EditorialSite() {
               <br />
               <em>Make smarter beauty decisions.</em>
             </h1>
-            <p className="editorial-deck">{TAIUO_DESCRIPTION}</p>
+            <p className="editorial-deck">
+              AI-powered skin insights, routine guidance and progress tracking. Get to know your
+              skin, one scan at a time.
+            </p>
             <div className="tech-hero-actions">
               <Action />
               <Link className="tech-secondary" href="#experience">
                 See how Taiuo works <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
-            <p className="editorial-fine">First scan free · No sign-up needed · 18+</p>
+            <p className="editorial-fine">Free skin analysis · No sign-up needed · 18+</p>
           </div>
-          <SkinPreview />
+          {hero === "couple" ? (
+            <figure className="editorial-hero-portrait">
+              <Image
+                src="/images/taiuo-couple-hero.png"
+                alt="Taiuo campaign artwork of a woman and man in ivory linen, in warm window light"
+                fill
+                preload
+                sizes="(max-width: 760px) 1100px, (max-width: 1100px) 1500px, 100vw"
+              />
+            </figure>
+          ) : (
+            <SkinPreview />
+          )}
         </section>
         <section id="how" className="tech-journey editorial-wrap" aria-labelledby="journey-title">
           <div className="tech-section-heading">
@@ -244,7 +278,7 @@ export function EditorialSite() {
             <em>Come back with perspective.</em>
           </h2>
           <Action />
-          <p className="editorial-fine">First scan free · No sign-up needed · 18+</p>
+          <p className="editorial-fine">Free skin analysis · No sign-up needed · 18+</p>
         </section>
       </main>
       <footer className="editorial-footer editorial-wrap">
