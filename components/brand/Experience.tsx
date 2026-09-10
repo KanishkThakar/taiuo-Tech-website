@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowRight, Menu, X, ScanFace, Sun, Moon, Check } from "lucide-react";
 import { APP_URL } from "@/lib/brand";
@@ -24,32 +25,37 @@ export function BrandNav() {
       window.removeEventListener("resize", resize);
     };
   }, [open]);
-  const items = [
-    ["The approach", "#how"],
-    ["The experience", "#experience"],
-    ["Discover", "#discovery"],
-    ["Our intelligence", "#intelligence"],
+  const items: [string, string][] = [
+    ["How it works", "#experience"],
+    ["Our science", "#intelligence"],
+    ["For brands", `${APP_URL}/studio/signup`],
+  ];
+  const mobileItems: [string, string][] = [
+    ...items,
+    ["Questions", "#faq"],
+    ["Sign in", `${APP_URL}/login`],
+    ["Start scan", `${APP_URL}/scan`],
   ];
   return (
     <header className="brand-header">
       <div className="brand-nav brand-wrap">
-        <a href="#main" className="brand-wordmark" aria-label="Taiuo home">
+        <Link href="#main" className="brand-wordmark" aria-label="Taiuo home">
           TAIUO
-        </a>
+        </Link>
         <nav className="desktop-nav" aria-label="Primary">
           {items.map(([label, href]) => (
-            <a key={href} href={href}>
+            <Link key={href} href={href}>
               {label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="nav-actions">
-          <a className="nav-signin" href={`${APP_URL}/login`}>
+          <Link className="nav-signin" href={`${APP_URL}/login`}>
             Sign in
-          </a>
-          <a className="nav-cta" href={`${APP_URL}/scan`}>
-            Get to know your skin <ArrowUpRight size={15} />
-          </a>
+          </Link>
+          <Link className="nav-cta" href={`${APP_URL}/scan`}>
+            Start scan <ArrowUpRight size={15} />
+          </Link>
           <button
             ref={toggle}
             className="mobile-toggle"
@@ -64,16 +70,11 @@ export function BrandNav() {
       </div>
       {open && (
         <nav id="brand-mobile-nav" className="mobile-brand-nav" aria-label="Mobile">
-          {[
-            ...items,
-            ["Questions", "#faq"],
-            ["Sign in", `${APP_URL}/login`],
-            ["Discover my skin", `${APP_URL}/scan`],
-          ].map(([label, href]) => (
-            <a key={href} href={href} onClick={() => setOpen(false)}>
+          {mobileItems.map(([label, href]) => (
+            <Link key={href} href={href} onClick={() => setOpen(false)}>
               {label}
               <ArrowUpRight size={18} />
-            </a>
+            </Link>
           ))}
         </nav>
       )}
@@ -84,15 +85,15 @@ export function BrandNav() {
 const previews = [
   {
     name: "Your skin read",
-    title: "A clearer read.",
-    subtitle: "A more considered next step.",
-    body: "See the details a mirror can’t put into words. Explore image-based insights into your skin, with context to help you decide what to focus on.",
+    title: "Understand what your photo shows.",
+    subtitle: "With context, not certainty.",
+    body: "Explore visible texture, tone evenness and redness in your skin report. These image-based estimates help you reflect on your care; they do not diagnose your skin.",
   },
   {
     name: "Your daily ritual",
     title: "Less overwhelm.",
     subtitle: "More everyday care.",
-    body: "Bring your recommendations into a morning and evening routine. A few considered steps, in one place, ready when you are.",
+    body: "See morning and evening care steps in one place. Use your insights to consider your routine, without treating every suggestion as another product to buy.",
   },
   {
     name: "Your progress",
@@ -112,9 +113,9 @@ export function ProductPreview() {
       <div className="experience-copy">
         <p className="brand-eyebrow">THE TAIUO EXPERIENCE</p>
         <h2>
-          Get closer to
+          See what you get.
           <br />
-          <em>your own skin.</em>
+          <em>Then make it yours.</em>
         </h2>
         <div className="experience-tabs" role="tablist" aria-label="Explore Taiuo">
           {previews.map((p, i) => (
@@ -153,9 +154,9 @@ export function ProductPreview() {
           </h3>
           <p className="brand-body">{preview.body}</p>
         </div>
-        <a className="brand-text-link" href={`${APP_URL}/scan`}>
+        <Link className="brand-text-link" href={`${APP_URL}/scan`}>
           Experience Taiuo <ArrowUpRight size={17} />
-        </a>
+        </Link>
       </div>
       <div className="preview-stage">
         <div
@@ -167,7 +168,7 @@ export function ProductPreview() {
         >
           <div className="preview-header">
             <span className="preview-wordmark">TAIUO</span>
-            <span className="sample-label">ILLUSTRATIVE PREVIEW</span>
+            <span className="sample-label">SAMPLE DATA</span>
           </div>
           {active === 0 && (
             <div className="preview-view">
@@ -260,7 +261,7 @@ export function ProductPreview() {
                 {[
                   ["Week 01", "Your starting point", "68"],
                   ["Week 02", "Making room for routine", "70"],
-                  ["Week 03", "A little time to reflect", "72"],
+                  ["Week 03", "A little time to reflect", "69"],
                 ].map(([week, title, score]) => (
                   <div key={week}>
                     <span>{week}</span>
@@ -275,12 +276,12 @@ export function ProductPreview() {
               </p>
             </div>
           )}
-          <a className="preview-bottom-link" href={`${APP_URL}/scan`}>
+          <Link className="preview-bottom-link" href={`${APP_URL}/scan`}>
             Start with your own skin <ArrowRight size={15} />
-          </a>
+          </Link>
         </div>
         <p className="preview-caption">
-          A glimpse inside Taiuo. Sample data, not a live skin analysis.
+          Illustrative interface and sample data. Not a live analysis or customer results.
         </p>
       </div>
     </div>

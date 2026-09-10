@@ -2,27 +2,34 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 test.use({ contextOptions: { reducedMotion: "reduce" } });
 
-test("homepage renders the brand story and couple campaign", async ({ page }) => {
+test("homepage explains the skin platform before supporting recommendations", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/");
-  await expect(page).toHaveTitle(/Taiuo.*Intelligent beauty/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Beauty beginswith you.");
+  await expect(page).toHaveTitle(/Taiuo.*Understand your skin/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Understand your skin.Make smarter beauty decisions.",
+  );
   for (const id of ["how", "experience", "discovery", "philosophy", "intelligence", "faq"])
     await expect(page.locator(`#${id}`)).toBeAttached();
-  await expect(page.locator(".editorial-hero-portrait img")).toHaveAttribute(
+  await expect(page.locator(".platform-portrait img")).toHaveAttribute(
     "alt",
-    /woman and man together/,
+    /illustrate guided skin capture/,
   );
-  await page.locator(".editorial-hero-portrait img").scrollIntoViewIfNeeded();
-  await expect(page.locator(".editorial-hero-portrait img")).toBeVisible();
+  await page.locator(".platform-portrait img").scrollIntoViewIfNeeded();
+  await expect(page.locator(".platform-portrait img")).toBeVisible();
   await expect
     .poll(() =>
       page
-        .locator(".editorial-hero-portrait img")
+        .locator(".platform-portrait img")
         .evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0),
     )
     .toBe(true);
+  await expect(page.locator(".tech-steps li")).toHaveCount(4);
+  await expect(page.locator(".tech-hero a[href*=products]")).toHaveCount(0);
+  await expect(
+    page.getByText("Interface illustration. This portrait has not been analysed."),
+  ).toBeVisible();
   expect(errors).toEqual([]);
 });
 
@@ -55,12 +62,17 @@ test("FAQ opens one answer at a time", async ({ page }) => {
   await expect(page.locator("#faq details[open]")).toHaveCount(1);
   await page.locator("#faq summary").nth(1).click();
   await expect(page.locator("#faq details[open]")).toHaveCount(1);
-  await expect(page.locator("#faq details[open]")).toContainText("without creating an account");
+  await expect(page.locator("#faq details[open]")).toContainText("recommendations are optional");
 });
 
 test("conversion and policy links lead to the actual Taiuo app", async ({ page }) => {
   await page.goto("/");
-  for (const link of await page.getByRole("link", { name: "Discover my skin", exact: true }).all())
+  await expect(
+    page.getByRole("link", { name: "Start your skin analysis", exact: true }),
+  ).toHaveCount(2);
+  for (const link of await page
+    .getByRole("link", { name: "Start your skin analysis", exact: true })
+    .all())
     await expect(link).toHaveAttribute("href", "https://taiuo.com/scan");
   await expect(page.getByRole("link", { name: "Privacy", exact: true })).toHaveAttribute(
     "href",
@@ -83,7 +95,7 @@ test("mobile menu closes with Escape and an anchor selection", async ({ page }) 
   await page.getByRole("button", { name: "Open menu" }).click();
   await page
     .getByRole("navigation", { name: "Mobile" })
-    .getByRole("link", { name: "The experience" })
+    .getByRole("link", { name: "How it works" })
     .click();
   await expect(page.getByRole("navigation", { name: "Mobile" })).toHaveCount(0);
   expect(
@@ -121,16 +133,18 @@ test("design studio exposes all 12 full-page directions and device controls", as
 
 test("product, scent and model evidence copy preserve their claim boundaries", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "Explore skincare" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "Explore skincare options" })).toHaveAttribute(
     "href",
     "https://taiuo.com/products",
   );
-  await expect(page.getByRole("link", { name: "Explore fragrance" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "Explore fragrance preferences" })).toHaveAttribute(
     "href",
     "https://taiuo.com/fragrance",
   );
   await page.locator(".evidence-details summary").click();
   await expect(page.locator(".evidence-details")).toContainText("25 synthetic faces");
   await expect(page.locator(".evidence-details")).toContainText("not skin-condition detection");
-  await expect(page.locator(".discovery-scent")).toContainText("scent preferences come from you");
+  await expect(page.locator(".tech-support-grid")).toContainText(
+    "stated taste, occasion and budget",
+  );
 });

@@ -1,10 +1,16 @@
+/** The standalone website opens the production Taiuo application. */
 export const APP_URL = "https://taiuo.com";
-// Enable after the member application and brand-library migration are live.
-export const BRAND_PORTAL_ENABLED = process.env.NEXT_PUBLIC_BRAND_PORTAL_ENABLED === "true";
+export const BRAND_PORTAL_ENABLED = true;
+export const TAIUO_DESCRIPTION =
+  "Taiuo is an AI-powered beauty tech platform that helps you explore your skin, build a more informed care routine, and track visible changes over time.";
 export const BRAND_FAQ = [
   {
     q: "What does Taiuo do?",
-    a: "Taiuo turns a guided selfie scan into personal skin insights. Explore your read, use it to inform an everyday routine, and return to track changes over time.",
+    a: TAIUO_DESCRIPTION,
+  },
+  {
+    q: "Do I need to buy new products to use Taiuo?",
+    a: "No. Skin insights, routine planning and scan history are the core experience. You can also review products you already own through Check your shelf. Catalog recommendations are optional, and pictured products are not a Taiuo product line.",
   },
   {
     q: "Is my first scan really free?",
