@@ -42,6 +42,6 @@ export const BRAND_FAQ = [
   },
   {
     q: "How accurate is the model?",
-    a: "Accuracy depends on the task and capture conditions. We publish component evaluation notes rather than one overall accuracy percentage. The internal capture-quality benchmark is not a clinical validation of skin analysis, product effectiveness or fragrance preference. Read the evaluation notes above for the test setup and limits.",
+    a: "Results are photo-based estimates and can vary with lighting, camera quality and products on your skin. Use them as guidance for understanding your routine, not as a diagnosis.",
   },
 ];
